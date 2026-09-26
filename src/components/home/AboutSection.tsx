@@ -23,7 +23,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ settings, onNavigate
           <Card className="border-[#1e293b] bg-[#111827] p-6 space-y-6">
             <div className="relative aspect-square rounded-2xl overflow-hidden border border-[#334155] bg-[#0a0e17]">
               <img
-                src="/src/assets/images/profile image.jpeg"
+                src="/assets/images/profile image.jpeg"
                 alt="Sajjad Khan - Full-Stack Web Developer"
                 className="w-full h-full object-cover"
                 loading="lazy"
