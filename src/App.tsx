@@ -56,34 +56,43 @@ export default function App() {
   const [adminToken, setAdminToken] = useState<string | null>(() => localStorage.getItem('admin_token'));
   const [adminEmail, setAdminEmail] = useState<string>('sajjad2003khan@gmail.com');
 
-  // Validate admin token with server to prevent stale/invalid session lock
+  // Validate admin token with server (resilient against network hiccups and static deployments)
   useEffect(() => {
     if (!adminToken) return;
 
     let isMounted = true;
-    fetch('/api/admin/session', {
-      headers: { Authorization: `Bearer ${adminToken}` },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error('Session invalid');
-        return res.json();
-      })
-      .then((data) => {
-        if (isMounted) {
-          if (!data || !data.authenticated || !data.user) {
-            localStorage.removeItem('admin_token');
-            setAdminToken(null);
-          } else if (data.user?.email) {
+    const checkSession = async () => {
+      try {
+        const res = await fetch('/api/admin/session', {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        });
+
+        const contentType = res.headers.get('content-type') || '';
+
+        // Only log out if the backend explicitly returned a 401 with authenticated: false
+        if (res.status === 401 && contentType.includes('application/json')) {
+          const data = await res.json().catch(() => null);
+          if (data && data.authenticated === false) {
+            if (isMounted) {
+              localStorage.removeItem('admin_token');
+              setAdminToken(null);
+            }
+            return;
+          }
+        }
+
+        if (res.ok && contentType.includes('application/json')) {
+          const data = await res.json().catch(() => null);
+          if (isMounted && data?.user?.email) {
             setAdminEmail(data.user.email);
           }
         }
-      })
-      .catch(() => {
-        if (isMounted) {
-          localStorage.removeItem('admin_token');
-          setAdminToken(null);
-        }
-      });
+      } catch {
+        // Network offline, Vercel static rewrites, etc. -> preserve active local session
+      }
+    };
+
+    checkSession();
 
     return () => {
       isMounted = false;

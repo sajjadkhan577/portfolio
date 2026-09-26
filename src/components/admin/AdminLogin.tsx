@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, Mail, ShieldCheck, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
+import { Lock, ShieldCheck, AlertCircle } from 'lucide-react';
 import { Button, Card } from '../ui/Button';
 import { Input } from '../ui/FormElements';
 
@@ -9,8 +9,8 @@ interface AdminLoginProps {
 }
 
 export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackToSite }) => {
-  const [email, setEmail] = useState('sajjad2003khan@gmail.com');
-  const [password, setPassword] = useState('sajjad_admin_2026!');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -40,7 +40,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
         }
       }
 
-      // If backend returned non-JSON, 404, or 405 (e.g. static Vite hosting on Vercel without serverless)
+      // If on Vercel static hosting where backend API returns 404/405
       if (!contentType.includes('application/json') || res.status === 404 || res.status === 405) {
         if (
           email.toLowerCase().trim() === 'sajjad2003khan@gmail.com' &&
@@ -59,7 +59,6 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
       const data = await res.json().catch(() => ({}));
       setError(data.error || 'Invalid credentials or unauthorized email.');
     } catch {
-      // In case fetch threw network failure (e.g. offline or static deploy with no backend API)
       if (
         email.toLowerCase().trim() === 'sajjad2003khan@gmail.com' &&
         password === 'sajjad_admin_2026!'
@@ -75,11 +74,6 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
     }
   };
 
-  const handleQuickFill = () => {
-    setEmail('sajjad2003khan@gmail.com');
-    setPassword('sajjad_admin_2026!');
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-[#0a0e17] relative">
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#00e599]/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -91,7 +85,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
           </div>
           <h2 className="text-2xl font-bold text-[#f8fafc]">Admin Access Portal</h2>
           <p className="text-xs font-mono text-[#94a3b8]">
-            Protected by Server Allow-List & Signed Token Auth
+            Protected by Server Allow-List &amp; Signed Token Auth
           </p>
         </div>
 
@@ -109,7 +103,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="sajjad2003khan@gmail.com"
+            placeholder="name@domain.com"
           />
 
           <Input
@@ -129,29 +123,19 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
             isLoading={isLoading}
             leftIcon={<ShieldCheck className="w-4 h-4 text-[#0a0e17]" />}
           >
-            Authenticate & Open Dashboard
+            Authenticate &amp; Open Dashboard
           </Button>
         </form>
 
-        {/* Quick Demo Pre-fill */}
-        <div className="pt-2 border-t border-[#1e293b] text-center space-y-3">
+        {/* Links */}
+        <div className="pt-2 border-t border-[#1e293b] text-center">
           <button
-            onClick={handleQuickFill}
+            onClick={onBackToSite}
             type="button"
-            className="inline-flex items-center gap-1.5 text-xs font-mono text-[#00e599] hover:underline cursor-pointer"
+            className="text-xs text-[#64748b] hover:text-[#94a3b8] transition-colors cursor-pointer"
           >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Fill Admin Credentials</span>
+            ← Back to Public Portfolio
           </button>
-
-          <div>
-            <button
-              onClick={onBackToSite}
-              className="text-xs text-[#64748b] hover:text-[#94a3b8] transition-colors"
-            >
-              ← Back to Public Portfolio
-            </button>
-          </div>
         </div>
       </Card>
     </div>
