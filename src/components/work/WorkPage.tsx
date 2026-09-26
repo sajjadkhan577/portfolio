@@ -51,13 +51,13 @@ export const WorkPage: React.FC<WorkPageProps> = ({
 
             {/* Search Input */}
             <div className="relative w-full sm:w-72">
-              <Search className="w-4 h-4 text-[#64748b] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Search className="w-4 h-4 text-[var(--text-muted)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
                 placeholder="Search projects or stack..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 bg-[#111827] text-sm text-[#f8fafc] border border-[#1e293b] rounded-xl focus:outline-none focus:border-[#00e599]"
+                className="w-full pl-9 pr-4 py-2 bg-[var(--bg-surface)] text-sm text-[var(--text-primary)] border border-[var(--border-color)] rounded-xl focus:outline-none focus:border-[var(--accent-color)]"
               />
             </div>
           </div>
@@ -68,8 +68,8 @@ export const WorkPage: React.FC<WorkPageProps> = ({
               onClick={() => setFilterTech('all')}
               className={`px-3 py-1 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
                 filterTech === 'all'
-                  ? 'bg-[#00e599] text-[#0a0e17] font-bold'
-                  : 'bg-[#111827] text-[#94a3b8] hover:text-[#f8fafc] border border-[#1e293b]'
+                  ? 'bg-[var(--accent-color)] text-[var(--bg-primary)] font-bold'
+                  : 'bg-[var(--bg-surface)] text-[var(--text-muted)] hover:text-[var(--text-primary)] border border-[var(--border-color)]'
               }`}
             >
               All Stacks ({projects.length})
@@ -80,8 +80,8 @@ export const WorkPage: React.FC<WorkPageProps> = ({
                 onClick={() => setFilterTech(tech)}
                 className={`px-3 py-1 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
                   filterTech === tech
-                    ? 'bg-[#00e599] text-[#0a0e17] font-bold'
-                    : 'bg-[#111827] text-[#94a3b8] hover:text-[#f8fafc] border border-[#1e293b]'
+                    ? 'bg-[var(--accent-color)] text-[var(--bg-primary)] font-bold'
+                    : 'bg-[var(--bg-surface)] text-[var(--text-muted)] hover:text-[var(--text-primary)] border border-[var(--border-color)]'
                 }`}
               >
                 {tech}
@@ -96,12 +96,12 @@ export const WorkPage: React.FC<WorkPageProps> = ({
             <Card
               key={project.id || project.slug}
               hoverEffect
-              className="flex flex-col justify-between border-[#1e293b] bg-[#111827]/90 p-5 group"
+              className="flex flex-col justify-between border-[var(--border-color)] bg-[var(--bg-surface)]/90 p-5 group"
             >
               <div className="space-y-4">
                 {/* Cover Image */}
                 <div
-                  className="relative aspect-video rounded-xl overflow-hidden bg-[#0a0e17] border border-[#1e293b] cursor-pointer"
+                  className="relative aspect-video rounded-xl overflow-hidden bg-[var(--bg-primary)] border border-[var(--border-color)] cursor-pointer"
                   onClick={() => onSelectProject(project)}
                 >
                   {project.cover_image_url ? (
@@ -111,7 +111,7 @@ export const WorkPage: React.FC<WorkPageProps> = ({
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-xs font-mono text-[#64748b]">
+                    <div className="w-full h-full flex items-center justify-center text-xs font-mono text-[var(--text-muted)]">
                       [Platform Preview]
                     </div>
                   )}
@@ -126,11 +126,11 @@ export const WorkPage: React.FC<WorkPageProps> = ({
                 <div>
                   <h3
                     onClick={() => onSelectProject(project)}
-                    className="text-lg font-bold text-[#f8fafc] hover:text-[#00e599] transition-colors cursor-pointer line-clamp-1"
+                    className="text-lg font-bold text-[var(--text-primary)] hover:text-[var(--accent-color)] transition-colors cursor-pointer line-clamp-1"
                   >
                     {project.title}
                   </h3>
-                  <p className="mt-1.5 text-xs text-[#94a3b8] line-clamp-2 leading-relaxed">
+                  <p className="mt-1.5 text-xs text-[var(--text-muted)] line-clamp-2 leading-relaxed">
                     {project.summary}
                   </p>
                 </div>
@@ -140,13 +140,13 @@ export const WorkPage: React.FC<WorkPageProps> = ({
                   {project.tech.slice(0, 4).map((t) => (
                     <span
                       key={t}
-                      className="px-2 py-0.5 rounded bg-[#1e293b] text-[11px] font-mono text-[#94a3b8] border border-[#334155]"
+                      className="px-2 py-0.5 rounded bg-[var(--bg-surface-elevated)] text-[11px] font-mono text-[var(--text-muted)] border border-[var(--border-glow)]"
                     >
                       {t}
                     </span>
                   ))}
                   {project.tech.length > 4 && (
-                    <span className="px-2 py-0.5 rounded bg-[#1e293b] text-[11px] font-mono text-[#64748b]">
+                    <span className="px-2 py-0.5 rounded bg-[var(--bg-surface-elevated)] text-[11px] font-mono text-[var(--text-muted)]">
                       +{project.tech.length - 4}
                     </span>
                   )}
@@ -154,10 +154,10 @@ export const WorkPage: React.FC<WorkPageProps> = ({
               </div>
 
               {/* Action Links */}
-              <div className="pt-4 mt-4 border-t border-[#1e293b] flex items-center justify-between">
+              <div className="pt-4 mt-4 border-t border-[var(--border-color)] flex items-center justify-between">
                 <button
                   onClick={() => onSelectProject(project)}
-                  className="inline-flex items-center gap-1 text-xs font-semibold text-[#00e599] hover:underline cursor-pointer"
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--accent-color)] hover:underline cursor-pointer"
                 >
                   <Eye className="w-3.5 h-3.5" />
                   <span>Case Study</span>
@@ -169,7 +169,7 @@ export const WorkPage: React.FC<WorkPageProps> = ({
                       href={project.live_url.includes('[') ? undefined : project.live_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-1.5 rounded-lg text-[#94a3b8] hover:text-[#00e599] hover:bg-[#1e293b]"
+                      className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--accent-color)] hover:bg-[var(--bg-surface-elevated)]"
                       title="Live link"
                     >
                       <ExternalLink className="w-4 h-4" />
@@ -180,7 +180,7 @@ export const WorkPage: React.FC<WorkPageProps> = ({
                       href={project.repo_url.includes('[') ? undefined : project.repo_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-1.5 rounded-lg text-[#94a3b8] hover:text-[#00e599] hover:bg-[#1e293b]"
+                      className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--accent-color)] hover:bg-[var(--bg-surface-elevated)]"
                       title="GitHub code"
                     >
                       <Github className="w-4 h-4" />

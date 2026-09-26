@@ -125,10 +125,10 @@ export const AdminLeads: React.FC<AdminLeadsProps> = ({ token }) => {
       {/* Action Header */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-[#f8fafc]">
+          <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
             Leads & Inquiries CRM
           </h2>
-          <p className="text-xs text-[#94a3b8]">
+          <p className="text-xs text-[var(--text-muted)]">
             Manage client prospects, track follow-up dates, set deal values, and log private notes.
           </p>
         </div>
@@ -137,31 +137,31 @@ export const AdminLeads: React.FC<AdminLeadsProps> = ({ token }) => {
           size="sm"
           variant="outline"
           onClick={handleExportCSV}
-          leftIcon={<Download className="w-4 h-4 text-[#00e599]" />}
+          leftIcon={<Download className="w-4 h-4 text-[var(--accent-color)]" />}
         >
           Export CSV Report
         </Button>
       </div>
 
       {/* Filter and Search Bar */}
-      <Card className="border-[#1e293b] bg-[#111827] p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+      <Card className="border-[var(--border-color)] bg-[var(--bg-surface)] p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
         <div className="relative flex-1">
-          <Search className="w-4 h-4 text-[#64748b] absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[var(--text-muted)] absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search leads by name, email, or message..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-[#0a0e17] text-sm text-[#f8fafc] border border-[#1e293b] rounded-xl focus:outline-none focus:border-[#00e599]"
+            className="w-full pl-9 pr-4 py-2 bg-[var(--bg-primary)] text-sm text-[var(--text-primary)] border border-[var(--border-color)] rounded-xl focus:outline-none focus:border-[var(--accent-color)]"
           />
         </div>
 
         <div className="flex items-center gap-2">
-          <Filter className="w-4 h-4 text-[#64748b]" />
+          <Filter className="w-4 h-4 text-[var(--text-muted)]" />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 bg-[#0a0e17] text-xs font-mono text-[#f8fafc] border border-[#1e293b] rounded-xl focus:outline-none focus:border-[#00e599]"
+            className="px-3 py-2 bg-[var(--bg-primary)] text-xs font-mono text-[var(--text-primary)] border border-[var(--border-color)] rounded-xl focus:outline-none focus:border-[var(--accent-color)]"
           >
             <option value="all">All Statuses</option>
             <option value="new">New</option>
@@ -177,19 +177,19 @@ export const AdminLeads: React.FC<AdminLeadsProps> = ({ token }) => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Leads Table */}
         <div className={`${selectedLead ? 'lg:col-span-7' : 'lg:col-span-12'}`}>
-          <Card className="border-[#1e293b] bg-[#111827] p-0 overflow-hidden">
+          <Card className="border-[var(--border-color)] bg-[var(--bg-surface)] p-0 overflow-hidden">
             {isLoading ? (
-              <div className="p-8 text-center text-sm font-mono text-[#94a3b8]">
+              <div className="p-8 text-center text-sm font-mono text-[var(--text-muted)]">
                 Loading leads records...
               </div>
             ) : leads.length === 0 ? (
-              <div className="p-8 text-center text-sm text-[#64748b]">
+              <div className="p-8 text-center text-sm text-[var(--text-muted)]">
                 No leads found matching your criteria.
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-[#0a0e17] text-[#94a3b8] font-mono border-b border-[#1e293b]">
+                  <thead className="bg-[var(--bg-primary)] text-[var(--text-muted)] font-mono border-b border-[var(--border-color)]">
                     <tr>
                       <th className="py-3 px-4">Contact</th>
                       <th className="py-3 px-4">Project & Budget</th>
@@ -198,7 +198,7 @@ export const AdminLeads: React.FC<AdminLeadsProps> = ({ token }) => {
                       <th className="py-3 px-4 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#1e293b]">
+                  <tbody className="divide-y divide-[var(--bg-surface-elevated)]">
                     {leads.map((lead) => {
                       const isOverdue =
                         lead.follow_up_date &&
@@ -211,32 +211,32 @@ export const AdminLeads: React.FC<AdminLeadsProps> = ({ token }) => {
                       return (
                         <tr
                           key={lead.id}
-                          className={`hover:bg-[#1e293b]/40 transition-colors cursor-pointer ${
-                            isSelected ? 'bg-[#1e293b]/70 border-l-2 border-l-[#00e599]' : ''
+                          className={`hover:bg-[var(--bg-surface-elevated)]/40 transition-colors cursor-pointer ${
+                            isSelected ? 'bg-[var(--bg-surface-elevated)]/70 border-l-2 border-l-[var(--accent-color)]' : ''
                           }`}
                           onClick={() => setSelectedLead(lead)}
                         >
                           <td className="py-3.5 px-4">
-                            <span className="font-bold text-[#f8fafc] block">{lead.name}</span>
-                            <span className="text-[#94a3b8]">{lead.email}</span>
+                            <span className="font-bold text-[var(--text-primary)] block">{lead.name}</span>
+                            <span className="text-[var(--text-muted)]">{lead.email}</span>
                           </td>
                           <td className="py-3.5 px-4">
-                            <span className="text-[#f8fafc] block">{lead.project_type}</span>
-                            <span className="text-[#00e599] font-mono">{lead.budget}</span>
+                            <span className="text-[var(--text-primary)] block">{lead.project_type}</span>
+                            <span className="text-[var(--accent-color)] font-mono">{lead.budget}</span>
                           </td>
                           <td className="py-3.5 px-4">{getStatusBadge(lead.status)}</td>
                           <td className="py-3.5 px-4">
                             {lead.follow_up_date ? (
                               <span
                                 className={`font-mono flex items-center gap-1 ${
-                                  isOverdue ? 'text-amber-400 font-bold' : 'text-[#94a3b8]'
+                                  isOverdue ? 'text-amber-400 font-bold' : 'text-[var(--text-muted)]'
                                 }`}
                               >
                                 {isOverdue && <AlertCircle className="w-3.5 h-3.5 text-amber-400" />}
                                 {lead.follow_up_date}
                               </span>
                             ) : (
-                              <span className="text-[#64748b]">—</span>
+                              <span className="text-[var(--text-muted)]">—</span>
                             )}
                           </td>
                           <td className="py-3.5 px-4 text-right space-x-2">
@@ -245,7 +245,7 @@ export const AdminLeads: React.FC<AdminLeadsProps> = ({ token }) => {
                                 e.stopPropagation();
                                 setSelectedLead(lead);
                               }}
-                              className="p-1.5 rounded-lg text-[#94a3b8] hover:text-[#00e599] hover:bg-[#0a0e17]"
+                              className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--accent-color)] hover:bg-[var(--bg-primary)]"
                               title="Open Lead"
                             >
                               <Eye className="w-4 h-4" />
@@ -255,7 +255,7 @@ export const AdminLeads: React.FC<AdminLeadsProps> = ({ token }) => {
                                 e.stopPropagation();
                                 handleDeleteLead(lead.id);
                               }}
-                              className="p-1.5 rounded-lg text-[#94a3b8] hover:text-rose-400 hover:bg-[#0a0e17]"
+                              className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-rose-400 hover:bg-[var(--bg-primary)]"
                               title="Delete Lead"
                             >
                               <Trash2 className="w-4 h-4" />
@@ -274,29 +274,29 @@ export const AdminLeads: React.FC<AdminLeadsProps> = ({ token }) => {
         {/* Selected Lead Detail & CRM Notes Drawer */}
         {selectedLead && (
           <div className="lg:col-span-5">
-            <Card className="border-[#1e293b] bg-[#111827] p-6 space-y-6 sticky top-24 shadow-2xl">
-              <div className="flex items-center justify-between pb-4 border-b border-[#1e293b]">
+            <Card className="border-[var(--border-color)] bg-[var(--bg-surface)] p-6 space-y-6 sticky top-24 shadow-2xl">
+              <div className="flex items-center justify-between pb-4 border-b border-[var(--border-color)]">
                 <div>
-                  <h3 className="text-lg font-bold text-[#f8fafc]">{selectedLead.name}</h3>
+                  <h3 className="text-lg font-bold text-[var(--text-primary)]">{selectedLead.name}</h3>
                   <a
                     href={`mailto:${selectedLead.email}`}
-                    className="text-xs font-mono text-[#00e599] hover:underline"
+                    className="text-xs font-mono text-[var(--accent-color)] hover:underline"
                   >
                     {selectedLead.email}
                   </a>
                 </div>
                 <button
                   onClick={() => setSelectedLead(null)}
-                  className="text-xs text-[#94a3b8] hover:text-[#f8fafc]"
+                  className="text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)]"
                 >
                   Close
                 </button>
               </div>
 
               {/* Inquiry Message */}
-              <div className="p-3.5 rounded-xl bg-[#0a0e17] border border-[#1e293b] space-y-1">
-                <span className="text-[11px] font-mono text-[#64748b] uppercase">Visitor Message:</span>
-                <p className="text-xs sm:text-sm text-[#f8fafc] leading-relaxed whitespace-pre-line">
+              <div className="p-3.5 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] space-y-1">
+                <span className="text-[11px] font-mono text-[var(--text-muted)] uppercase">Visitor Message:</span>
+                <p className="text-xs sm:text-sm text-[var(--text-primary)] leading-relaxed whitespace-pre-line">
                   {selectedLead.message}
                 </p>
               </div>
@@ -355,7 +355,7 @@ export const AdminLeads: React.FC<AdminLeadsProps> = ({ token }) => {
                 className="w-full"
                 onClick={handleUpdateLead}
                 isLoading={isSaving}
-                leftIcon={<CheckCircle className="w-4 h-4 text-[#0a0e17]" />}
+                leftIcon={<CheckCircle className="w-4 h-4 text-[var(--bg-primary)]" />}
               >
                 Save Lead Changes
               </Button>

@@ -21,18 +21,18 @@ export const TrustStrip: React.FC<TrustStripProps> = ({ testimonial }) => {
   ];
 
   return (
-    <div className="w-full bg-[#0d131f] border-y border-[#1e293b] py-8 sm:py-10">
+    <div className="w-full bg-[var(--bg-strip)] border-y border-[var(--border-color)] py-8 sm:py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         {/* Technologies Grid */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <span className="text-xs font-mono font-semibold uppercase tracking-wider text-[#64748b] shrink-0">
+          <span className="text-xs font-mono font-semibold uppercase tracking-wider text-[var(--text-muted)] shrink-0">
             Core Technologies:
           </span>
           <div className="flex flex-wrap items-center gap-2">
             {techStack.map((tech) => (
               <span
                 key={tech.name}
-                className="px-3 py-1 rounded-lg bg-[#111827] text-xs font-mono text-[#f8fafc] border border-[#1e293b] hover:border-[#00e599]/40 hover:text-[#00e599] transition-colors"
+                className="px-3 py-1 rounded-lg bg-[var(--bg-surface)] text-xs font-mono text-[var(--text-primary)] border border-[var(--border-color)] hover:border-[var(--accent-color)]/40 hover:text-[var(--accent-color)] transition-colors"
               >
                 {tech.name}
               </span>
@@ -42,15 +42,15 @@ export const TrustStrip: React.FC<TrustStripProps> = ({ testimonial }) => {
 
         {/* Featured Client Verification Snippet */}
         {testimonial && (
-          <div className="pt-4 border-t border-[#1e293b]/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm text-[#94a3b8]">
+          <div className="pt-4 border-t border-[var(--border-color)]/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm text-[var(--text-muted)]">
             <div className="flex items-center gap-2.5 italic">
-              <Quote className="w-4 h-4 text-[#00e599] shrink-0" />
+              <Quote className="w-4 h-4 text-[var(--accent-color)] shrink-0" />
               <span>{testimonial.quote}</span>
             </div>
-            <div className="flex items-center gap-2 shrink-0 font-medium text-[#f8fafc]">
-              <ShieldCheck className="w-4 h-4 text-[#00e599]" />
+            <div className="flex items-center gap-2 shrink-0 font-medium text-[var(--text-primary)]">
+              <ShieldCheck className="w-4 h-4 text-[var(--accent-color)]" />
               <span>{testimonial.author_name}</span>
-              <span className="text-xs text-[#64748b]">({testimonial.author_role})</span>
+              <span className="text-xs text-[var(--text-muted)]">({testimonial.author_role})</span>
             </div>
           </div>
         )}

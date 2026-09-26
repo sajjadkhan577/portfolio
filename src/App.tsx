@@ -343,7 +343,7 @@ export default function App() {
           />
         )
       ) : !isKnownRoute ? (
-        <div className="min-h-screen flex flex-col bg-[#0a0e17] text-[#f8fafc]">
+        <div className="min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)]">
           <Navbar
             settings={settings}
             currentPath={currentPath}
@@ -357,7 +357,7 @@ export default function App() {
           <Footer settings={settings} onNavigate={navigateTo} />
         </div>
       ) : (
-        <div className="min-h-screen flex flex-col bg-[#0a0e17] text-[#f8fafc] selection:bg-[#00e599]/30 selection:text-[#00e599]">
+        <div className="min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)] selection:bg-[var(--accent-color)]/30 selection:text-[var(--accent-color)]">
           {/* Global Navigation */}
           <Navbar
             settings={settings}

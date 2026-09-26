@@ -41,7 +41,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#1e293b]/80 bg-[#0a0e17]/85 backdrop-blur-md transition-colors duration-200">
+    <header className="sticky top-0 z-50 w-full border-b border-[var(--border-color)]/80 bg-[var(--bg-primary)]/85 backdrop-blur-md transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
@@ -49,14 +49,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => onNavigate('/')}
             className="flex items-center gap-2.5 text-left group cursor-pointer"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#1e293b] to-[#0a0e17] border border-[#334155] flex items-center justify-center font-bold text-[#00e599] group-hover:border-[#00e599]/60 transition-colors">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[var(--bg-surface-elevated)] to-[var(--bg-primary)] border border-[var(--border-glow)] flex items-center justify-center font-bold text-[var(--accent-color)] group-hover:border-[var(--accent-color)]/60 transition-colors">
               SK
             </div>
             <div>
-              <span className="font-display font-bold text-base sm:text-lg text-[#f8fafc] tracking-tight group-hover:text-[#00e599] transition-colors">
+              <span className="font-display font-bold text-base sm:text-lg text-[var(--text-primary)] tracking-tight group-hover:text-[var(--accent-color)] transition-colors">
                 Sajjad Khan
               </span>
-              <span className="hidden sm:block text-[11px] font-mono text-[#94a3b8] -mt-0.5">
+              <span className="hidden sm:block text-[11px] font-mono text-[var(--text-muted)] -mt-0.5">
                 Full-Stack Web Developer
               </span>
             </div>
@@ -68,7 +68,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 key={link.label}
                 onClick={() => handleLinkClick(link)}
-                className="px-3.5 py-1.5 text-sm font-medium text-[#94a3b8] hover:text-[#f8fafc] hover:bg-[#1e293b]/60 rounded-lg transition-colors cursor-pointer"
+                className="px-3.5 py-1.5 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)]/60 rounded-lg transition-colors cursor-pointer"
               >
                 {link.label}
               </button>
@@ -81,7 +81,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               onClick={onToggleTheme}
               aria-label="Toggle dark/light theme"
-              className="p-2 rounded-xl text-[#94a3b8] hover:text-[#f8fafc] hover:bg-[#1e293b] border border-transparent hover:border-[#334155] transition-colors cursor-pointer"
+              className="p-2 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] border border-transparent hover:border-[var(--border-glow)] transition-colors cursor-pointer"
             >
               {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-indigo-400" />}
             </button>
@@ -95,7 +95,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onNavigate('/contact');
                 }
               }}
-              className="px-4 py-2 text-xs sm:text-sm font-semibold text-[#0a0e17] bg-[#00e599] hover:bg-[#00cc88] rounded-xl shadow-md shadow-[#00e599]/20 transition-all flex items-center gap-1.5 cursor-pointer"
+              className="px-4 py-2 text-xs sm:text-sm font-semibold text-[var(--bg-primary)] bg-[var(--accent-color)] hover:bg-[var(--accent-hover)] rounded-xl shadow-md shadow-[var(--accent-color)]/20 transition-all flex items-center gap-1.5 cursor-pointer"
             >
               Book a Call
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -107,13 +107,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               onClick={onToggleTheme}
               aria-label="Toggle theme"
-              className="p-2 rounded-lg text-[#94a3b8] hover:text-[#f8fafc]"
+              className="p-2 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)]"
             >
               {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-indigo-400" />}
             </button>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-xl text-[#94a3b8] hover:text-[#f8fafc] hover:bg-[#1e293b] cursor-pointer"
+              className="p-2 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] cursor-pointer"
               aria-label="Toggle mobile menu"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -123,23 +123,23 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Mobile Dropdown Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-[#1e293b] space-y-2 animate-fadeIn">
+          <div className="md:hidden py-4 border-t border-[var(--border-color)] space-y-2 animate-fadeIn">
             {navLinks.map((link) => (
               <button
                 key={link.label}
                 onClick={() => handleLinkClick(link)}
-                className="w-full text-left px-4 py-2.5 text-sm font-medium text-[#94a3b8] hover:text-[#f8fafc] hover:bg-[#1e293b] rounded-xl transition-colors cursor-pointer"
+                className="w-full text-left px-4 py-2.5 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] rounded-xl transition-colors cursor-pointer"
               >
                 {link.label}
               </button>
             ))}
-            <div className="pt-3 border-t border-[#1e293b]">
+            <div className="pt-3 border-t border-[var(--border-color)]">
               <button
                 onClick={() => {
                   setIsMobileMenuOpen(false);
                   onNavigate('/contact');
                 }}
-                className="w-full py-2.5 text-center text-sm font-semibold text-[#0a0e17] bg-[#00e599] rounded-xl"
+                className="w-full py-2.5 text-center text-sm font-semibold text-[var(--bg-primary)] bg-[var(--accent-color)] rounded-xl"
               >
                 Book a Free Strategy Call
               </button>

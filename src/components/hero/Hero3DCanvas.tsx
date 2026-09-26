@@ -258,18 +258,18 @@ export const Hero3DCanvas: React.FC = () => {
           <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80"></span>
           <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80"></span>
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></span>
-          <span className="text-[11px] font-mono text-[#64748b] ml-1">Terminal • s-khan.dev</span>
+          <span className="text-[11px] font-mono text-[var(--text-muted)] ml-1">Terminal • s-khan.dev</span>
         </div>
 
         {hasWebGL && (
-          <div className="inline-flex items-center p-0.5 rounded-lg bg-[#111827] border border-[#1e293b] text-xs font-mono">
+          <div className="inline-flex items-center p-0.5 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-color)] text-xs font-mono">
             <button
               type="button"
               onClick={() => setViewMode('architecture')}
               className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
                 viewMode === 'architecture'
-                  ? 'bg-[#00e599]/15 text-[#00e599] font-semibold border border-[#00e599]/30'
-                  : 'text-[#94a3b8] hover:text-[#f8fafc]'
+                  ? 'bg-[var(--accent-color)]/15 text-[var(--accent-color)] font-semibold border border-[var(--accent-color)]/30'
+                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
               }`}
             >
               ⚡ Architecture
@@ -279,8 +279,8 @@ export const Hero3DCanvas: React.FC = () => {
               onClick={() => setViewMode('3d')}
               className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
                 viewMode === '3d'
-                  ? 'bg-[#00e599]/15 text-[#00e599] font-semibold border border-[#00e599]/30'
-                  : 'text-[#94a3b8] hover:text-[#f8fafc]'
+                  ? 'bg-[var(--accent-color)]/15 text-[var(--accent-color)] font-semibold border border-[var(--accent-color)]/30'
+                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
               }`}
             >
               🌐 3D Node Hub
@@ -290,58 +290,58 @@ export const Hero3DCanvas: React.FC = () => {
       </div>
 
       {viewMode === 'architecture' ? (
-        <div className="relative w-full rounded-2xl bg-[#111827]/90 border border-[#1e293b] p-5 sm:p-6 flex flex-col justify-between overflow-hidden shadow-2xl backdrop-blur-xl">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#00e599]/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="relative w-full rounded-2xl bg-[var(--bg-surface)]/90 border border-[var(--border-color)] p-5 sm:p-6 flex flex-col justify-between overflow-hidden shadow-2xl backdrop-blur-xl">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--accent-color)]/10 rounded-full blur-3xl pointer-events-none"></div>
 
-          <div className="flex items-center justify-between border-b border-[#1e293b] pb-3 mb-4">
-            <span className="text-xs font-mono font-semibold text-[#00e599] bg-[#00e599]/10 px-3 py-1 rounded-full border border-[#00e599]/25 flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00e599] animate-pulse"></span>
+          <div className="flex items-center justify-between border-b border-[var(--border-color)] pb-3 mb-4">
+            <span className="text-xs font-mono font-semibold text-[var(--accent-color)] bg-[var(--accent-color)]/10 px-3 py-1 rounded-full border border-[var(--accent-color)]/25 flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-color)] animate-pulse"></span>
               System Architecture
             </span>
-            <span className="text-[11px] font-mono text-[#94a3b8]">Production Stack</span>
+            <span className="text-[11px] font-mono text-[var(--text-muted)]">Production Stack</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 my-1">
-            <div className="p-4 rounded-xl bg-[#0a0e17] border border-[#1e293b] space-y-1.5 transition-all hover:border-[#00e599]/40">
-              <span className="text-xs text-[#94a3b8] font-mono">Backend Engines</span>
-              <p className="text-sm font-semibold text-[#f8fafc]">PHP • MySQL • Node</p>
-              <p className="text-xs text-[#00e599] font-mono">Verified LMS & Portals</p>
+            <div className="p-4 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] space-y-1.5 transition-all hover:border-[var(--accent-color)]/40">
+              <span className="text-xs text-[var(--text-muted)] font-mono">Backend Engines</span>
+              <p className="text-sm font-semibold text-[var(--text-primary)]">PHP • MySQL • Node</p>
+              <p className="text-xs text-[var(--accent-color)] font-mono">Verified LMS & Portals</p>
             </div>
 
-            <div className="p-4 rounded-xl bg-[#0a0e17] border border-[#1e293b] space-y-1.5 transition-all hover:border-[#38bdf8]/40">
-              <span className="text-xs text-[#94a3b8] font-mono">Front-End Speed</span>
-              <p className="text-sm font-semibold text-[#f8fafc]">React • Tailwind • PWA</p>
-              <p className="text-xs text-[#38bdf8] font-mono">Sub-Second Loading</p>
+            <div className="p-4 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] space-y-1.5 transition-all hover:border-[var(--blue-accent)]/40">
+              <span className="text-xs text-[var(--text-muted)] font-mono">Front-End Speed</span>
+              <p className="text-sm font-semibold text-[var(--text-primary)]">React • Tailwind • PWA</p>
+              <p className="text-xs text-[var(--blue-accent)] font-mono">Sub-Second Loading</p>
             </div>
 
-            <div className="sm:col-span-2 p-4 rounded-xl bg-[#0a0e17] border border-[#1e293b] flex items-center justify-between transition-all hover:border-[#00e599]/40">
+            <div className="sm:col-span-2 p-4 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] flex items-center justify-between transition-all hover:border-[var(--accent-color)]/40">
               <div className="space-y-0.5">
-                <span className="text-xs text-[#94a3b8] font-mono">Lighthouse Mobile Target</span>
-                <p className="text-sm font-bold text-[#f8fafc]">90+ Performance • 95+ Accessibility</p>
+                <span className="text-xs text-[var(--text-muted)] font-mono">Lighthouse Mobile Target</span>
+                <p className="text-sm font-bold text-[var(--text-primary)]">90+ Performance • 95+ Accessibility</p>
               </div>
-              <div className="w-11 h-11 rounded-full bg-[#00e599]/15 border border-[#00e599]/40 flex items-center justify-center text-sm font-mono font-bold text-[#00e599] shadow-lg shadow-[#00e599]/20">
+              <div className="w-11 h-11 rounded-full bg-[var(--accent-color)]/15 border border-[var(--accent-color)]/40 flex items-center justify-center text-sm font-mono font-bold text-[var(--accent-color)] shadow-lg shadow-[var(--accent-color)]/20">
                 99
               </div>
             </div>
           </div>
 
-          <div className="text-[11px] text-[#64748b] font-mono text-center pt-3 border-t border-[#1e293b]/60 mt-3">
+          <div className="text-[11px] text-[var(--text-muted)] font-mono text-center pt-3 border-t border-[var(--border-color)]/60 mt-3">
             Engineered by Sajjad Khan • Clean Code Architecture
           </div>
         </div>
       ) : (
-        <div className="relative w-full h-[380px] sm:h-[420px] rounded-2xl bg-[#111827]/90 border border-[#1e293b] flex items-center justify-center overflow-hidden shadow-2xl select-none">
+        <div className="relative w-full h-[380px] sm:h-[420px] rounded-2xl bg-[var(--bg-surface)]/90 border border-[var(--border-color)] flex items-center justify-center overflow-hidden shadow-2xl select-none">
           <div
             ref={mountRef}
             className="w-full h-full flex items-center justify-center cursor-grab active:cursor-grabbing"
           />
           {/* Interactive Micro-badge overlay */}
-          <div className="absolute bottom-2 left-4 right-4 flex items-center justify-between text-[11px] font-mono text-[#94a3b8] bg-[#111827]/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#1e293b] pointer-events-none">
+          <div className="absolute bottom-2 left-4 right-4 flex items-center justify-between text-[11px] font-mono text-[var(--text-muted)] bg-[var(--bg-surface)]/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[var(--border-color)] pointer-events-none">
             <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#00e599] animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-[var(--accent-color)] animate-pulse"></span>
               Interactive 3D Procedural Hub
             </span>
-            <span className="text-[#64748b]">Damped Cursor Physics • 0 KB Models</span>
+            <span className="text-[var(--text-muted)]">Damped Cursor Physics • 0 KB Models</span>
           </div>
         </div>
       )}

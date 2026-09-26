@@ -24,16 +24,16 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case 'Calendar':
-        return <Calendar className="w-6 h-6 text-[#00e599]" />;
+        return <Calendar className="w-6 h-6 text-[var(--accent-color)]" />;
       case 'GraduationCap':
-        return <GraduationCap className="w-6 h-6 text-[#00e599]" />;
+        return <GraduationCap className="w-6 h-6 text-[var(--accent-color)]" />;
       case 'LayoutDashboard':
-        return <LayoutDashboard className="w-6 h-6 text-[#00e599]" />;
+        return <LayoutDashboard className="w-6 h-6 text-[var(--accent-color)]" />;
       case 'ShoppingBag':
-        return <ShoppingBag className="w-6 h-6 text-[#00e599]" />;
+        return <ShoppingBag className="w-6 h-6 text-[var(--accent-color)]" />;
       case 'Wrench':
       default:
-        return <Wrench className="w-6 h-6 text-[#00e599]" />;
+        return <Wrench className="w-6 h-6 text-[var(--accent-color)]" />;
     }
   };
 
@@ -103,37 +103,37 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
             <Card
               key={service.id || index}
               hoverEffect
-              className="flex flex-col justify-between border-[#1e293b] bg-[#111827]/90 relative overflow-hidden group"
+              className="flex flex-col justify-between border-[var(--border-color)] bg-[var(--bg-surface)]/90 relative overflow-hidden group"
             >
               <div className="space-y-4">
                 {/* Header with Icon and Order Index */}
                 <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 rounded-xl bg-[#1e293b] border border-[#334155] flex items-center justify-center group-hover:border-[#00e599]/60 transition-colors">
+                  <div className="w-12 h-12 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-glow)] flex items-center justify-center group-hover:border-[var(--accent-color)]/60 transition-colors">
                     {getIcon(service.icon)}
                   </div>
-                  <span className="text-xs font-mono text-[#64748b] font-semibold">
+                  <span className="text-xs font-mono text-[var(--text-muted)] font-semibold">
                     0{index + 1}
                   </span>
                 </div>
 
                 {/* Service Title */}
-                <h3 className="text-xl font-bold text-[#f8fafc] group-hover:text-[#00e599] transition-colors">
+                <h3 className="text-xl font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-color)] transition-colors">
                   {service.title}
                 </h3>
 
                 {/* Description */}
-                <p className="text-sm text-[#94a3b8] leading-relaxed">
+                <p className="text-sm text-[var(--text-muted)] leading-relaxed">
                   {service.description}
                 </p>
 
                 {/* Deliverables Checklist */}
-                <div className="pt-3 border-t border-[#1e293b] space-y-2">
-                  <span className="text-xs font-mono font-medium text-[#64748b] block uppercase">
+                <div className="pt-3 border-t border-[var(--border-color)] space-y-2">
+                  <span className="text-xs font-mono font-medium text-[var(--text-muted)] block uppercase">
                     What You Get:
                   </span>
                   {deliverables.map((item, dIdx) => (
-                    <div key={dIdx} className="flex items-start gap-2 text-xs text-[#94a3b8]">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#00e599] shrink-0 mt-0.5" />
+                    <div key={dIdx} className="flex items-start gap-2 text-xs text-[var(--text-muted)]">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[var(--accent-color)] shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </div>
                   ))}
@@ -141,10 +141,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
               </div>
 
               {/* Action Button */}
-              <div className="pt-6 mt-6 border-t border-[#1e293b]">
+              <div className="pt-6 mt-6 border-t border-[var(--border-color)]">
                 <button
                   onClick={() => handleInquire(service.title)}
-                  className="w-full py-2.5 px-4 rounded-xl bg-[#1e293b] hover:bg-[#273549] text-xs font-semibold text-[#f8fafc] hover:text-[#00e599] border border-[#334155] hover:border-[#00e599]/40 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  className="w-full py-2.5 px-4 rounded-xl bg-[var(--bg-surface-elevated)] hover:bg-[var(--bg-surface-dark)] text-xs font-semibold text-[var(--text-primary)] hover:text-[var(--accent-color)] border border-[var(--border-glow)] hover:border-[var(--accent-color)]/40 flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   <span>Request Proposal for This</span>
                   <ArrowRight className="w-3.5 h-3.5" />

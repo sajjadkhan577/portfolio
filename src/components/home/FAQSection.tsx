@@ -29,19 +29,19 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ faqs }) => {
           return (
             <Card
               key={faq.id || index}
-              className="border-[#1e293b] bg-[#111827]/80 p-5 sm:p-6 transition-all"
+              className="border-[var(--border-color)] bg-[var(--bg-surface)]/80 p-5 sm:p-6 transition-all"
             >
               <button
                 onClick={() => toggle(index)}
                 className="w-full flex items-center justify-between text-left gap-4 cursor-pointer focus:outline-none"
                 aria-expanded={isOpen}
               >
-                <span className="text-base sm:text-lg font-bold text-[#f8fafc] hover:text-[#00e599] transition-colors">
+                <span className="text-base sm:text-lg font-bold text-[var(--text-primary)] hover:text-[var(--accent-color)] transition-colors">
                   {faq.question}
                 </span>
                 <span
-                  className={`p-1.5 rounded-lg bg-[#1e293b] text-[#94a3b8] transition-transform duration-200 shrink-0 ${
-                    isOpen ? 'rotate-180 text-[#00e599]' : ''
+                  className={`p-1.5 rounded-lg bg-[var(--bg-surface-elevated)] text-[var(--text-muted)] transition-transform duration-200 shrink-0 ${
+                    isOpen ? 'rotate-180 text-[var(--accent-color)]' : ''
                   }`}
                 >
                   <ChevronDown className="w-4 h-4" />
@@ -49,7 +49,7 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ faqs }) => {
               </button>
 
               {isOpen && (
-                <div className="pt-4 mt-4 border-t border-[#1e293b] text-sm text-[#94a3b8] leading-relaxed animate-fadeIn">
+                <div className="pt-4 mt-4 border-t border-[var(--border-color)] text-sm text-[var(--text-muted)] leading-relaxed animate-fadeIn">
                   {faq.answer}
                 </div>
               )}

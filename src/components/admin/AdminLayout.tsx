@@ -42,35 +42,35 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
   ] as const;
 
   return (
-    <div className="min-h-screen bg-[#0a0e17] text-[#f8fafc] flex flex-col">
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] flex flex-col">
       {/* Top Admin Header */}
-      <header className="sticky top-0 z-40 bg-[#111827] border-b border-[#1e293b] px-4 sm:px-6 py-3.5">
+      <header className="sticky top-0 z-40 bg-[var(--bg-surface)] border-b border-[var(--border-color)] px-4 sm:px-6 py-3.5">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
               onClick={onBackToSite}
-              className="p-1.5 rounded-lg text-[#94a3b8] hover:text-[#f8fafc] hover:bg-[#1e293b] transition-colors"
+              className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-colors"
               title="Return to Public Website"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-[#00e599]/10 border border-[#00e599]/30 text-[#00e599] flex items-center justify-center font-bold text-xs">
+              <div className="w-7 h-7 rounded-lg bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/30 text-[var(--accent-color)] flex items-center justify-center font-bold text-xs">
                 SK
               </div>
-              <h1 className="font-bold text-sm sm:text-base tracking-tight text-[#f8fafc]">
+              <h1 className="font-bold text-sm sm:text-base tracking-tight text-[var(--text-primary)]">
                 Portfolio Control Center
               </h1>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="hidden sm:inline-block text-xs font-mono text-[#94a3b8] bg-[#0a0e17] px-3 py-1 rounded-full border border-[#1e293b]">
+            <span className="hidden sm:inline-block text-xs font-mono text-[var(--text-muted)] bg-[var(--bg-primary)] px-3 py-1 rounded-full border border-[var(--border-color)]">
               {adminEmail}
             </span>
             <button
               onClick={onLogout}
-              className="px-3 py-1.5 rounded-xl bg-[#1e293b] hover:bg-rose-950 text-xs font-medium text-[#94a3b8] hover:text-rose-300 border border-[#334155] hover:border-rose-800 transition-colors flex items-center gap-1.5 cursor-pointer"
+              className="px-3 py-1.5 rounded-xl bg-[var(--bg-surface-elevated)] hover:bg-rose-950 text-xs font-medium text-[var(--text-muted)] hover:text-rose-300 border border-[var(--border-glow)] hover:border-rose-800 transition-colors flex items-center gap-1.5 cursor-pointer"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Log Out</span>
@@ -82,7 +82,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
       {/* Main Layout Container with Tab Bar */}
       <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 flex-1 flex flex-col">
         {/* Navigation Tabs */}
-        <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto pb-2 border-b border-[#1e293b] mb-6 scrollbar-none">
+        <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto pb-2 border-b border-[var(--border-color)] mb-6 scrollbar-none">
           {navItems.map((item) => {
             const isActive = activeTab === item.id;
             return (
@@ -91,8 +91,8 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
                 onClick={() => setActiveTab(item.id)}
                 className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer ${
                   isActive
-                    ? 'bg-[#00e599] text-[#0a0e17] font-bold shadow-md shadow-[#00e599]/20'
-                    : 'text-[#94a3b8] hover:text-[#f8fafc] hover:bg-[#111827]'
+                    ? 'bg-[var(--accent-color)] text-[var(--bg-primary)] font-bold shadow-md shadow-[var(--accent-color)]/20'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface)]'
                 }`}
               >
                 {item.icon}

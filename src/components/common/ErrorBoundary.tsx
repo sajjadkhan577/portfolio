@@ -36,23 +36,23 @@ export class ErrorBoundary extends Component<Props, State> {
   public render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-[#0a0e17] text-[#f8fafc] flex items-center justify-center p-4">
-          <Card className="w-full max-w-lg border-[#1e293b] bg-[#111827] p-8 text-center space-y-6 shadow-2xl">
+        <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] flex items-center justify-center p-4">
+          <Card className="w-full max-w-lg border-[var(--border-color)] bg-[var(--bg-surface)] p-8 text-center space-y-6 shadow-2xl">
             <div className="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 flex items-center justify-center mx-auto">
               <AlertTriangle className="w-7 h-7" />
             </div>
 
             <div className="space-y-2">
-              <h1 className="text-2xl font-extrabold text-[#f8fafc]">
+              <h1 className="text-2xl font-extrabold text-[var(--text-primary)]">
                 Application Exception Encountered
               </h1>
-              <p className="text-sm text-[#94a3b8] leading-relaxed">
+              <p className="text-sm text-[var(--text-muted)] leading-relaxed">
                 An unexpected interface issue occurred. Your data is safe and our systems remain operational.
               </p>
             </div>
 
             {this.state.error && process.env.NODE_ENV !== 'production' && (
-              <div className="p-3 bg-[#0a0e17] rounded-xl border border-[#1e293b] text-left text-xs font-mono text-rose-300 max-h-40 overflow-y-auto">
+              <div className="p-3 bg-[var(--bg-primary)] rounded-xl border border-[var(--border-color)] text-left text-xs font-mono text-rose-300 max-h-40 overflow-y-auto">
                 {this.state.error.toString()}
               </div>
             )}
@@ -62,7 +62,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 variant="primary"
                 size="md"
                 onClick={this.handleReload}
-                leftIcon={<RefreshCw className="w-4 h-4 text-[#0a0e17]" />}
+                leftIcon={<RefreshCw className="w-4 h-4 text-[var(--bg-primary)]" />}
               >
                 Reload Application
               </Button>
@@ -70,7 +70,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 variant="secondary"
                 size="md"
                 onClick={this.handleGoHome}
-                leftIcon={<Home className="w-4 h-4 text-[#00e599]" />}
+                leftIcon={<Home className="w-4 h-4 text-[var(--accent-color)]" />}
               >
                 Return to Homepage
               </Button>

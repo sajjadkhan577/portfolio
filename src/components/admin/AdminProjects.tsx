@@ -191,10 +191,10 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-[#f8fafc]">
+          <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
             Projects & Architecture Portfolio
           </h2>
-          <p className="text-xs text-[#94a3b8]">
+          <p className="text-xs text-[var(--text-muted)]">
             Manage featured client builds, problem/solution breakdowns, live links, and privacy settings.
           </p>
         </div>
@@ -203,7 +203,7 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
           size="sm"
           variant="primary"
           onClick={handleOpenNew}
-          leftIcon={<Plus className="w-4 h-4 text-[#0a0e17]" />}
+          leftIcon={<Plus className="w-4 h-4 text-[var(--bg-primary)]" />}
         >
           Add New Project
         </Button>
@@ -214,10 +214,10 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
         {projects.map((project) => (
           <Card
             key={project.id || project.slug}
-            className="border-[#1e293b] bg-[#111827] p-5 flex flex-col justify-between space-y-4"
+            className="border-[var(--border-color)] bg-[var(--bg-surface)] p-5 flex flex-col justify-between space-y-4"
           >
             <div className="space-y-3">
-              <div className="relative aspect-video rounded-xl overflow-hidden bg-[#0a0e17] border border-[#1e293b]">
+              <div className="relative aspect-video rounded-xl overflow-hidden bg-[var(--bg-primary)] border border-[var(--border-color)]">
                 {project.cover_image_url ? (
                   <img
                     src={project.cover_image_url}
@@ -225,7 +225,7 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-xs font-mono text-[#64748b]">
+                  <div className="w-full h-full flex items-center justify-center text-xs font-mono text-[var(--text-muted)]">
                     [No Screenshot]
                   </div>
                 )}
@@ -238,24 +238,24 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
               </div>
 
               <div>
-                <h3 className="font-bold text-[#f8fafc] text-base line-clamp-1">
+                <h3 className="font-bold text-[var(--text-primary)] text-base line-clamp-1">
                   {project.title}
                 </h3>
-                <p className="text-xs text-[#94a3b8] line-clamp-2 mt-1">
+                <p className="text-xs text-[var(--text-muted)] line-clamp-2 mt-1">
                   {project.summary}
                 </p>
               </div>
 
-              <div className="flex flex-wrap gap-1 text-[11px] font-mono text-[#94a3b8]">
+              <div className="flex flex-wrap gap-1 text-[11px] font-mono text-[var(--text-muted)]">
                 {project.tech.slice(0, 3).map((t) => (
-                  <span key={t} className="px-2 py-0.5 rounded bg-[#1e293b] border border-[#334155]">
+                  <span key={t} className="px-2 py-0.5 rounded bg-[var(--bg-surface-elevated)] border border-[var(--border-glow)]">
                     {t}
                   </span>
                 ))}
               </div>
             </div>
 
-            <div className="pt-3 border-t border-[#1e293b] flex items-center justify-between">
+            <div className="pt-3 border-t border-[var(--border-color)] flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Button
                   size="sm"
@@ -267,7 +267,7 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
                 </Button>
                 <button
                   onClick={() => handleDelete(project.id)}
-                  className="p-2 rounded-xl text-[#94a3b8] hover:text-rose-400 hover:bg-[#0a0e17] transition-colors"
+                  className="p-2 rounded-xl text-[var(--text-muted)] hover:text-rose-400 hover:bg-[var(--bg-primary)] transition-colors"
                   title="Delete"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -279,7 +279,7 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
                   href={project.live_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs font-mono text-[#00e599] flex items-center gap-1 hover:underline"
+                  className="text-xs font-mono text-[var(--accent-color)] flex items-center gap-1 hover:underline"
                 >
                   <ExternalLink className="w-3 h-3" />
                   Live
@@ -293,14 +293,14 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
       {/* Edit/Create Modal */}
       {editingProject && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="relative w-full max-w-2xl bg-[#111827] border border-[#1e293b] rounded-3xl p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto shadow-2xl">
-            <div className="flex items-center justify-between pb-3 border-b border-[#1e293b]">
-              <h3 className="text-lg font-bold text-[#f8fafc]">
+          <div className="relative w-full max-w-2xl bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-3xl p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-[var(--border-color)]">
+              <h3 className="text-lg font-bold text-[var(--text-primary)]">
                 {editingProject.id ? 'Edit Project' : 'Create New Project'}
               </h3>
               <button
                 onClick={() => setEditingProject(null)}
-                className="text-[#94a3b8] hover:text-[#f8fafc]"
+                className="text-[var(--text-muted)] hover:text-[var(--text-primary)]"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -366,12 +366,12 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
 
               {/* Image Upload with Client-Side Canvas Compression */}
               <div className="space-y-2">
-                <label className="block text-xs font-semibold uppercase tracking-wider text-[#94a3b8]">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
                   Cover Screenshot (Auto-compressed to WebP &lt;500KB)
                 </label>
                 <div className="flex items-center gap-3">
-                  <label className="inline-flex items-center gap-2 px-3 py-2 bg-[#1e293b] hover:bg-[#273549] text-xs font-medium text-[#f8fafc] rounded-xl border border-[#334155] cursor-pointer">
-                    <Upload className="w-4 h-4 text-[#00e599]" />
+                  <label className="inline-flex items-center gap-2 px-3 py-2 bg-[var(--bg-surface-elevated)] hover:bg-[var(--bg-surface-dark)] text-xs font-medium text-[var(--text-primary)] rounded-xl border border-[var(--border-glow)] cursor-pointer">
+                    <Upload className="w-4 h-4 text-[var(--accent-color)]" />
                     <span>Upload New Image</span>
                     <input
                       type="file"
@@ -381,7 +381,7 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
                     />
                   </label>
                   {editingProject.cover_image_url && (
-                    <span className="text-xs text-[#00e599] font-mono">Image attached ✓</span>
+                    <span className="text-xs text-[var(--accent-color)] font-mono">Image attached ✓</span>
                   )}
                 </div>
               </div>
@@ -412,7 +412,7 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
                 />
 
                 <div className="flex flex-col justify-center space-y-2 pt-4">
-                  <label className="flex items-center gap-2 text-xs text-[#f8fafc] cursor-pointer">
+                  <label className="flex items-center gap-2 text-xs text-[var(--text-primary)] cursor-pointer">
                     <input
                       type="checkbox"
                       checked={editingProject.show_client_name || false}
@@ -422,31 +422,31 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
                           show_client_name: e.target.checked,
                         })
                       }
-                      className="rounded bg-[#0a0e17] border-[#1e293b] text-[#00e599] focus:ring-[#00e599]"
+                      className="rounded bg-[var(--bg-primary)] border-[var(--border-color)] text-[var(--accent-color)] focus:ring-[var(--accent-color)]"
                     />
                     <span>Show Client Name Publicly</span>
                   </label>
 
-                  <label className="flex items-center gap-2 text-xs text-[#f8fafc] cursor-pointer">
+                  <label className="flex items-center gap-2 text-xs text-[var(--text-primary)] cursor-pointer">
                     <input
                       type="checkbox"
                       checked={editingProject.featured || false}
                       onChange={(e) =>
                         setEditingProject({ ...editingProject, featured: e.target.checked })
                       }
-                      className="rounded bg-[#0a0e17] border-[#1e293b] text-[#00e599] focus:ring-[#00e599]"
+                      className="rounded bg-[var(--bg-primary)] border-[var(--border-color)] text-[var(--accent-color)] focus:ring-[var(--accent-color)]"
                     />
                     <span>Mark as Featured (Home Page)</span>
                   </label>
 
-                  <label className="flex items-center gap-2 text-xs text-[#f8fafc] cursor-pointer">
+                  <label className="flex items-center gap-2 text-xs text-[var(--text-primary)] cursor-pointer">
                     <input
                       type="checkbox"
                       checked={editingProject.published || false}
                       onChange={(e) =>
                         setEditingProject({ ...editingProject, published: e.target.checked })
                       }
-                      className="rounded bg-[#0a0e17] border-[#1e293b] text-[#00e599] focus:ring-[#00e599]"
+                      className="rounded bg-[var(--bg-primary)] border-[var(--border-color)] text-[var(--accent-color)] focus:ring-[var(--accent-color)]"
                     />
                     <span>Published (Visible to public)</span>
                   </label>
@@ -454,7 +454,7 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-[#1e293b] flex items-center justify-end gap-3">
+            <div className="pt-4 border-t border-[var(--border-color)] flex items-center justify-end gap-3">
               <Button variant="ghost" size="sm" onClick={() => setEditingProject(null)}>
                 Cancel
               </Button>
@@ -463,7 +463,7 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
                 size="md"
                 onClick={handleSave}
                 isLoading={isSaving}
-                leftIcon={<CheckCircle className="w-4 h-4 text-[#0a0e17]" />}
+                leftIcon={<CheckCircle className="w-4 h-4 text-[var(--bg-primary)]" />}
               >
                 Save Project Changes
               </Button>

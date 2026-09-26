@@ -154,7 +154,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onNavigat
     {
       title: 'New Leads',
       value: stats.messages.new,
-      icon: <Inbox className="w-5 h-5 text-[#00e599]" />,
+      icon: <Inbox className="w-5 h-5 text-[var(--accent-color)]" />,
       badge: `${stats.messages.new} unread`,
       variant: 'accent' as const,
       onClick: () => onNavigateTab('leads'),
@@ -178,7 +178,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onNavigat
     {
       title: 'Pipeline Deal Value',
       value: `$${stats.messages.pipelineValue.toLocaleString()}`,
-      icon: <DollarSign className="w-5 h-5 text-[#00e599]" />,
+      icon: <DollarSign className="w-5 h-5 text-[var(--accent-color)]" />,
       badge: 'Estimated revenue',
       variant: 'accent' as const,
       onClick: () => onNavigateTab('leads'),
@@ -207,10 +207,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onNavigat
       {/* Top Header with Quick Refresh */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-[#f8fafc]">
+          <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
             Overview & Inbound Pipeline
           </h2>
-          <p className="text-xs text-[#94a3b8]">
+          <p className="text-xs text-[var(--text-muted)]">
             Real-time activity feed from your client inquiry forms and portfolio platforms.
           </p>
         </div>
@@ -220,7 +220,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onNavigat
           variant="outline"
           onClick={() => loadData(true)}
           isLoading={isRefreshing}
-          leftIcon={<RefreshCw className={`w-3.5 h-3.5 text-[#00e599] ${isRefreshing ? 'animate-spin' : ''}`} />}
+          leftIcon={<RefreshCw className={`w-3.5 h-3.5 text-[var(--accent-color)] ${isRefreshing ? 'animate-spin' : ''}`} />}
         >
           Refresh Feed
         </Button>
@@ -258,18 +258,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onNavigat
             key={i}
             hoverEffect
             onClick={card.onClick}
-            className="border-[#1e293b] bg-[#111827] p-5 cursor-pointer space-y-3"
+            className="border-[var(--border-color)] bg-[var(--bg-surface)] p-5 cursor-pointer space-y-3"
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-mono text-[#94a3b8] uppercase tracking-wider">
+              <span className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider">
                 {card.title}
               </span>
-              <div className="p-2 rounded-xl bg-[#0a0e17] border border-[#1e293b]">
+              <div className="p-2 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)]">
                 {card.icon}
               </div>
             </div>
             <div className="flex items-baseline justify-between">
-              <span className="text-2xl sm:text-3xl font-bold text-[#f8fafc]">
+              <span className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">
                 {card.value}
               </span>
               <Badge variant={card.variant}>{card.badge}</Badge>
@@ -279,11 +279,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onNavigat
       </div>
 
       {/* Leads Pipeline Visual Funnel */}
-      <Card className="border-[#1e293b] bg-[#111827] p-6 space-y-4">
+      <Card className="border-[var(--border-color)] bg-[var(--bg-surface)] p-6 space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-bold text-[#f8fafc]">Leads Pipeline Summary</h3>
-            <p className="text-xs text-[#94a3b8]">Breakdown of client inquiries across stages</p>
+            <h3 className="text-lg font-bold text-[var(--text-primary)]">Leads Pipeline Summary</h3>
+            <p className="text-xs text-[var(--text-muted)]">Breakdown of client inquiries across stages</p>
           </div>
           <Button
             size="sm"
@@ -296,41 +296,41 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onNavigat
         </div>
 
         <div className="grid grid-cols-5 gap-3 pt-2 text-center">
-          <div className="p-3 rounded-xl bg-[#0a0e17] border border-[#1e293b]">
-            <span className="text-xs font-mono text-[#00e599] block">NEW</span>
-            <span className="text-xl font-bold text-[#f8fafc]">{stats.messages.new}</span>
+          <div className="p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)]">
+            <span className="text-xs font-mono text-[var(--accent-color)] block">NEW</span>
+            <span className="text-xl font-bold text-[var(--text-primary)]">{stats.messages.new}</span>
           </div>
-          <div className="p-3 rounded-xl bg-[#0a0e17] border border-[#1e293b]">
+          <div className="p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)]">
             <span className="text-xs font-mono text-sky-400 block">CONTACTED</span>
-            <span className="text-xl font-bold text-[#f8fafc]">{stats.messages.contacted}</span>
+            <span className="text-xl font-bold text-[var(--text-primary)]">{stats.messages.contacted}</span>
           </div>
-          <div className="p-3 rounded-xl bg-[#0a0e17] border border-[#1e293b]">
+          <div className="p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)]">
             <span className="text-xs font-mono text-indigo-400 block">PROPOSAL</span>
-            <span className="text-xl font-bold text-[#f8fafc]">{stats.messages.proposal_sent}</span>
+            <span className="text-xl font-bold text-[var(--text-primary)]">{stats.messages.proposal_sent}</span>
           </div>
-          <div className="p-3 rounded-xl bg-[#0a0e17] border border-[#1e293b]">
+          <div className="p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)]">
             <span className="text-xs font-mono text-emerald-400 block">WON</span>
-            <span className="text-xl font-bold text-[#f8fafc]">{stats.messages.won}</span>
+            <span className="text-xl font-bold text-[var(--text-primary)]">{stats.messages.won}</span>
           </div>
-          <div className="p-3 rounded-xl bg-[#0a0e17] border border-[#1e293b]">
+          <div className="p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)]">
             <span className="text-xs font-mono text-rose-400 block">LOST</span>
-            <span className="text-xl font-bold text-[#f8fafc]">{stats.messages.lost}</span>
+            <span className="text-xl font-bold text-[var(--text-primary)]">{stats.messages.lost}</span>
           </div>
         </div>
       </Card>
 
       {/* RECENT INCOMING INQUIRIES FEED (Direct on Dashboard) */}
-      <Card className="border-[#1e293b] bg-[#111827] p-6 space-y-4">
+      <Card className="border-[var(--border-color)] bg-[var(--bg-surface)] p-6 space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-[#00e599]/10 border border-[#00e599]/30 text-[#00e599] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/30 text-[var(--accent-color)] flex items-center justify-center">
               <Mail className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-base sm:text-lg font-bold text-[#f8fafc]">
+              <h3 className="text-base sm:text-lg font-bold text-[var(--text-primary)]">
                 Recent Inquiries & Contact Form Submissions
               </h3>
-              <p className="text-xs text-[#94a3b8]">
+              <p className="text-xs text-[var(--text-muted)]">
                 Latest prospects submitted through your portfolio contact form
               </p>
             </div>
@@ -339,24 +339,24 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onNavigat
             size="sm"
             variant="outline"
             onClick={() => onNavigateTab('leads')}
-            rightIcon={<ArrowRight className="w-3.5 h-3.5 text-[#00e599]" />}
+            rightIcon={<ArrowRight className="w-3.5 h-3.5 text-[var(--accent-color)]" />}
           >
             Open Leads CRM
           </Button>
         </div>
 
         {recentLeads.length === 0 ? (
-          <div className="p-8 text-center rounded-xl bg-[#0a0e17] border border-[#1e293b] space-y-2">
-            <MessageSquare className="w-8 h-8 text-[#64748b] mx-auto" />
-            <p className="text-sm text-[#f8fafc] font-medium">No inquiries received yet</p>
-            <p className="text-xs text-[#94a3b8]">
+          <div className="p-8 text-center rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] space-y-2">
+            <MessageSquare className="w-8 h-8 text-[var(--text-muted)] mx-auto" />
+            <p className="text-sm text-[var(--text-primary)] font-medium">No inquiries received yet</p>
+            <p className="text-xs text-[var(--text-muted)]">
               Fill out the contact form on your public site to see incoming leads appear here instantly.
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-[#1e293b]">
+          <div className="overflow-x-auto rounded-xl border border-[var(--border-color)]">
             <table className="w-full text-left text-xs">
-              <thead className="bg-[#0a0e17] text-[#94a3b8] font-mono border-b border-[#1e293b]">
+              <thead className="bg-[var(--bg-primary)] text-[var(--text-muted)] font-mono border-b border-[var(--border-color)]">
                 <tr>
                   <th className="py-3 px-4">Contact</th>
                   <th className="py-3 px-4">Project & Budget</th>
@@ -365,29 +365,29 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onNavigat
                   <th className="py-3 px-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#1e293b] bg-[#111827]">
+              <tbody className="divide-y divide-[var(--bg-surface-elevated)] bg-[var(--bg-surface)]">
                 {recentLeads.map((lead) => (
                   <tr
                     key={lead.id}
                     onClick={() => onNavigateTab('leads')}
-                    className="hover:bg-[#1e293b]/50 transition-colors cursor-pointer"
+                    className="hover:bg-[var(--bg-surface-elevated)]/50 transition-colors cursor-pointer"
                   >
                     <td className="py-3 px-4">
-                      <span className="font-bold text-[#f8fafc] block">{lead.name}</span>
-                      <span className="text-[#94a3b8] font-mono text-[11px]">{lead.email}</span>
+                      <span className="font-bold text-[var(--text-primary)] block">{lead.name}</span>
+                      <span className="text-[var(--text-muted)] font-mono text-[11px]">{lead.email}</span>
                     </td>
                     <td className="py-3 px-4">
-                      <span className="text-[#f8fafc] block">{lead.project_type}</span>
-                      <span className="text-[#00e599] font-mono text-[11px]">{lead.budget || 'Not specified'}</span>
+                      <span className="text-[var(--text-primary)] block">{lead.project_type}</span>
+                      <span className="text-[var(--accent-color)] font-mono text-[11px]">{lead.budget || 'Not specified'}</span>
                     </td>
-                    <td className="py-3 px-4 max-w-xs truncate text-[#94a3b8]">
+                    <td className="py-3 px-4 max-w-xs truncate text-[var(--text-muted)]">
                       {lead.message}
                     </td>
                     <td className="py-3 px-4">
                       {getStatusBadge(lead.status)}
                     </td>
                     <td className="py-3 px-4 text-right">
-                      <span className="text-[#00e599] font-mono text-[11px] hover:underline">
+                      <span className="text-[var(--accent-color)] font-mono text-[11px] hover:underline">
                         View Lead ↗
                       </span>
                     </td>
@@ -404,41 +404,41 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onNavigat
         <Card
           hoverEffect
           onClick={() => onNavigateTab('projects')}
-          className="border-[#1e293b] bg-[#111827] p-5 cursor-pointer flex items-center justify-between"
+          className="border-[var(--border-color)] bg-[var(--bg-surface)] p-5 cursor-pointer flex items-center justify-between"
         >
           <div>
-            <span className="text-xs font-mono text-[#94a3b8] uppercase">Published Work</span>
-            <p className="text-xl font-bold text-[#f8fafc] mt-1">
+            <span className="text-xs font-mono text-[var(--text-muted)] uppercase">Published Work</span>
+            <p className="text-xl font-bold text-[var(--text-primary)] mt-1">
               {stats.counts.publishedProjects} / {stats.counts.projects} Projects
             </p>
           </div>
-          <Briefcase className="w-6 h-6 text-[#00e599]" />
+          <Briefcase className="w-6 h-6 text-[var(--accent-color)]" />
         </Card>
 
         <Card
           hoverEffect
           onClick={() => onNavigateTab('content')}
-          className="border-[#1e293b] bg-[#111827] p-5 cursor-pointer flex items-center justify-between"
+          className="border-[var(--border-color)] bg-[var(--bg-surface)] p-5 cursor-pointer flex items-center justify-between"
         >
           <div>
-            <span className="text-xs font-mono text-[#94a3b8] uppercase">Offerings & FAQs</span>
-            <p className="text-xl font-bold text-[#f8fafc] mt-1">
+            <span className="text-xs font-mono text-[var(--text-muted)] uppercase">Offerings & FAQs</span>
+            <p className="text-xl font-bold text-[var(--text-primary)] mt-1">
               {stats.counts.services} Services • {stats.counts.faqs} FAQs
             </p>
           </div>
-          <Users className="w-6 h-6 text-[#00e599]" />
+          <Users className="w-6 h-6 text-[var(--accent-color)]" />
         </Card>
 
         <Card
           hoverEffect
           onClick={() => onNavigateTab('settings')}
-          className="border-[#1e293b] bg-[#111827] p-5 cursor-pointer flex items-center justify-between"
+          className="border-[var(--border-color)] bg-[var(--bg-surface)] p-5 cursor-pointer flex items-center justify-between"
         >
           <div>
-            <span className="text-xs font-mono text-[#94a3b8] uppercase">Platform Controls</span>
-            <p className="text-xl font-bold text-[#f8fafc] mt-1">Hero, SEO & Links</p>
+            <span className="text-xs font-mono text-[var(--text-muted)] uppercase">Platform Controls</span>
+            <p className="text-xl font-bold text-[var(--text-primary)] mt-1">Hero, SEO & Links</p>
           </div>
-          <Clock className="w-6 h-6 text-[#00e599]" />
+          <Clock className="w-6 h-6 text-[var(--accent-color)]" />
         </Card>
       </div>
     </div>

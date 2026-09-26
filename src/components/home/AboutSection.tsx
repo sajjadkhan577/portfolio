@@ -20,35 +20,35 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ settings, onNavigate
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
         {/* Photo & Location Profile Card */}
         <div className="lg:col-span-5 space-y-6">
-          <Card className="border-[#1e293b] bg-[#111827] p-6 space-y-6">
-            <div className="relative aspect-square rounded-2xl overflow-hidden border border-[#334155] bg-[#0a0e17]">
+          <Card className="border-[var(--border-color)] bg-[var(--bg-surface)] p-6 space-y-6">
+            <div className="relative aspect-square rounded-2xl overflow-hidden border border-[var(--border-glow)] bg-[var(--bg-primary)]">
               <img
                 src="/assets/images/profile image.jpeg"
                 alt="Sajjad Khan - Full-Stack Web Developer"
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
-              <div className="absolute bottom-3 left-3 right-3 bg-[#0a0e17]/85 backdrop-blur-md px-3.5 py-2 rounded-xl border border-[#1e293b] flex items-center justify-between">
+              <div className="absolute bottom-3 left-3 right-3 bg-[var(--bg-primary)]/85 backdrop-blur-md px-3.5 py-2 rounded-xl border border-[var(--border-color)] flex items-center justify-between">
                 <div>
-                  <h4 className="text-sm font-bold text-[#f8fafc]">Sajjad Khan</h4>
-                  <p className="text-xs text-[#00e599] font-mono">Full-Stack Web Developer</p>
+                  <h4 className="text-sm font-bold text-[var(--text-primary)]">Sajjad Khan</h4>
+                  <p className="text-xs text-[var(--accent-color)] font-mono">Full-Stack Web Developer</p>
                 </div>
-                <div className="w-2.5 h-2.5 rounded-full bg-[#00e599] animate-pulse"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-[var(--accent-color)] animate-pulse"></div>
               </div>
             </div>
 
             {/* Remote Work Standard */}
-            <div className="space-y-3 text-xs font-mono text-[#94a3b8]">
-              <div className="flex items-center gap-2 p-2.5 rounded-lg bg-[#0a0e17] border border-[#1e293b]">
-                <MapPin className="w-4 h-4 text-[#00e599] shrink-0" />
+            <div className="space-y-3 text-xs font-mono text-[var(--text-muted)]">
+              <div className="flex items-center gap-2 p-2.5 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-color)]">
+                <MapPin className="w-4 h-4 text-[var(--accent-color)] shrink-0" />
                 <span>Base: Peshawar, Pakistan</span>
               </div>
-              <div className="flex items-center gap-2 p-2.5 rounded-lg bg-[#0a0e17] border border-[#1e293b]">
-                <Globe className="w-4 h-4 text-[#00e599] shrink-0" />
+              <div className="flex items-center gap-2 p-2.5 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-color)]">
+                <Globe className="w-4 h-4 text-[var(--accent-color)] shrink-0" />
                 <span>Working Remotely with Clients Worldwide (UTC+5)</span>
               </div>
-              <div className="flex items-center gap-2 p-2.5 rounded-lg bg-[#0a0e17] border border-[#1e293b]">
-                <Zap className="w-4 h-4 text-[#00e599] shrink-0" />
+              <div className="flex items-center gap-2 p-2.5 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-color)]">
+                <Zap className="w-4 h-4 text-[var(--accent-color)] shrink-0" />
                 <span>Sub-Second Response & Async Video Demos</span>
               </div>
             </div>
@@ -57,12 +57,12 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ settings, onNavigate
 
         {/* Narrative & Engineering Values */}
         <div className="lg:col-span-7 space-y-6">
-          <div className="space-y-4 text-base text-[#94a3b8] leading-relaxed">
-            <p className="text-lg text-[#f8fafc] font-medium leading-relaxed">
+          <div className="space-y-4 text-base text-[var(--text-muted)] leading-relaxed">
+            <p className="text-lg text-[var(--text-primary)] font-medium leading-relaxed">
               I specialize in engineering full-stack platforms for clients who need dependable systems: coaches scaling their calendar, course creators needing custom gated portals with verified payments, and founders building robust web applications.
             </p>
             <p>
-              I work comfortably across both traditional, battle-tested server architectures (<strong className="text-[#f8fafc]">PHP + MySQL</strong>) and modern full-stack JavaScript ecosystems (<strong className="text-[#f8fafc]">React, Node.js, Express, MongoDB, Tailwind CSS</strong>).
+              I work comfortably across both traditional, battle-tested server architectures (<strong className="text-[var(--text-primary)]">PHP + MySQL</strong>) and modern full-stack JavaScript ecosystems (<strong className="text-[var(--text-primary)]">React, Node.js, Express, MongoDB, Tailwind CSS</strong>).
             </p>
             <p>
               When a client works with me, they get direct access to the engineer doing the work—no account managers, no inflated junior agency billing, and no code obfuscation.
@@ -71,22 +71,22 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ settings, onNavigate
 
           {/* Core Principles Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-            <div className="p-4 rounded-xl bg-[#111827] border border-[#1e293b] space-y-1.5">
-              <div className="flex items-center gap-2 text-[#00e599]">
+            <div className="p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)] space-y-1.5">
+              <div className="flex items-center gap-2 text-[var(--accent-color)]">
                 <Zap className="w-4 h-4" />
-                <h5 className="text-sm font-bold text-[#f8fafc]">Performance as a Feature</h5>
+                <h5 className="text-sm font-bold text-[var(--text-primary)]">Performance as a Feature</h5>
               </div>
-              <p className="text-xs text-[#94a3b8]">
+              <p className="text-xs text-[var(--text-muted)]">
                 Every millisecond of page load counts toward your conversion. I build sites targeting 90+ Lighthouse mobile speed.
               </p>
             </div>
 
-            <div className="p-4 rounded-xl bg-[#111827] border border-[#1e293b] space-y-1.5">
-              <div className="flex items-center gap-2 text-[#00e599]">
+            <div className="p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)] space-y-1.5">
+              <div className="flex items-center gap-2 text-[var(--accent-color)]">
                 <Cpu className="w-4 h-4" />
-                <h5 className="text-sm font-bold text-[#f8fafc]">Zero SaaS Lock-in</h5>
+                <h5 className="text-sm font-bold text-[var(--text-primary)]">Zero SaaS Lock-in</h5>
               </div>
-              <p className="text-xs text-[#94a3b8]">
+              <p className="text-xs text-[var(--text-muted)]">
                 Why pay $300/month forever for cookie-cutter LMS platforms? You own your code, database, and customer relationships.
               </p>
             </div>
@@ -98,7 +98,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ settings, onNavigate
               variant="primary"
               size="md"
               onClick={() => onNavigate('/contact')}
-              rightIcon={<ArrowUpRight className="w-4 h-4 text-[#0a0e17]" />}
+              rightIcon={<ArrowUpRight className="w-4 h-4 text-[var(--bg-primary)]" />}
             >
               Start a Conversation
             </Button>
@@ -106,7 +106,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ settings, onNavigate
               href={settings.github_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-xs font-mono text-[#94a3b8] hover:text-[#00e599] transition-colors"
+              className="inline-flex items-center gap-2 text-xs font-mono text-[var(--text-muted)] hover:text-[var(--accent-color)] transition-colors"
             >
               <Terminal className="w-4 h-4" />
               <span>Review GitHub Repositories</span>

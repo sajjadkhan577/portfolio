@@ -75,16 +75,16 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-[#0a0e17] relative">
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#00e599]/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div className="min-h-screen flex items-center justify-center p-4 bg-[var(--bg-primary)] relative">
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[var(--accent-color)]/10 rounded-full blur-3xl pointer-events-none"></div>
 
-      <Card className="w-full max-w-md border-[#1e293b] bg-[#111827] p-8 space-y-6 relative shadow-2xl">
+      <Card className="w-full max-w-md border-[var(--border-color)] bg-[var(--bg-surface)] p-8 space-y-6 relative shadow-2xl">
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-2xl bg-[#00e599]/10 border border-[#00e599]/30 text-[#00e599] flex items-center justify-center mx-auto">
+          <div className="w-12 h-12 rounded-2xl bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/30 text-[var(--accent-color)] flex items-center justify-center mx-auto">
             <Lock className="w-6 h-6" />
           </div>
-          <h2 className="text-2xl font-bold text-[#f8fafc]">Admin Access Portal</h2>
-          <p className="text-xs font-mono text-[#94a3b8]">
+          <h2 className="text-2xl font-bold text-[var(--text-primary)]">Admin Access Portal</h2>
+          <p className="text-xs font-mono text-[var(--text-muted)]">
             Protected by Server Allow-List &amp; Signed Token Auth
           </p>
         </div>
@@ -121,18 +121,18 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
             size="lg"
             className="w-full"
             isLoading={isLoading}
-            leftIcon={<ShieldCheck className="w-4 h-4 text-[#0a0e17]" />}
+            leftIcon={<ShieldCheck className="w-4 h-4 text-[var(--bg-primary)]" />}
           >
             Authenticate &amp; Open Dashboard
           </Button>
         </form>
 
         {/* Links */}
-        <div className="pt-2 border-t border-[#1e293b] text-center">
+        <div className="pt-2 border-t border-[var(--border-color)] text-center">
           <button
             onClick={onBackToSite}
             type="button"
-            className="text-xs text-[#64748b] hover:text-[#94a3b8] transition-colors cursor-pointer"
+            className="text-xs text-[var(--text-muted)] hover:text-[var(--text-muted)] transition-colors cursor-pointer"
           >
             ← Back to Public Portfolio
           </button>

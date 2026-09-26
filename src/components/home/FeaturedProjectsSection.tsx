@@ -33,7 +33,7 @@ export const FeaturedProjectsSection: React.FC<FeaturedProjectsSectionProps> = (
             <Card
               key={project.id || project.slug}
               hoverEffect
-              className="border-[#1e293b] bg-[#111827]/90 p-6 sm:p-8"
+              className="border-[var(--border-color)] bg-[var(--bg-surface)]/90 p-6 sm:p-8"
             >
               <div
                 className={`grid grid-cols-1 lg:grid-cols-12 gap-8 items-center ${
@@ -42,12 +42,12 @@ export const FeaturedProjectsSection: React.FC<FeaturedProjectsSectionProps> = (
               >
                 {/* Visual / Screenshot Column */}
                 <div
-                  className={`lg:col-span-6 relative overflow-hidden rounded-xl border border-[#1e293b] group cursor-pointer ${
+                  className={`lg:col-span-6 relative overflow-hidden rounded-xl border border-[var(--border-color)] group cursor-pointer ${
                     isEven ? '' : 'lg:col-start-7'
                   }`}
                   onClick={() => onSelectProject(project)}
                 >
-                  <div className="relative aspect-video w-full bg-[#0a0e17] overflow-hidden">
+                  <div className="relative aspect-video w-full bg-[var(--bg-primary)] overflow-hidden">
                     {project.cover_image_url ? (
                       <img
                         src={project.cover_image_url}
@@ -56,16 +56,16 @@ export const FeaturedProjectsSection: React.FC<FeaturedProjectsSectionProps> = (
                         loading="lazy"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-sm font-mono text-[#64748b] bg-gradient-to-br from-[#111827] to-[#0a0e17]">
+                      <div className="w-full h-full flex items-center justify-center text-sm font-mono text-[var(--text-muted)] bg-gradient-to-br from-[var(--bg-surface)] to-[var(--bg-primary)]">
                         <span>[Platform Interface Preview]</span>
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0e17] via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)] via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity"></div>
                   </div>
 
                   {/* Quick Action Overlay */}
                   <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span className="px-3 py-1.5 rounded-lg bg-[#00e599] text-[#0a0e17] text-xs font-semibold flex items-center gap-1 shadow-lg">
+                    <span className="px-3 py-1.5 rounded-lg bg-[var(--accent-color)] text-[var(--bg-primary)] text-xs font-semibold flex items-center gap-1 shadow-lg">
                       <Eye className="w-3.5 h-3.5" />
                       View Case Study
                     </span>
@@ -84,12 +84,12 @@ export const FeaturedProjectsSection: React.FC<FeaturedProjectsSectionProps> = (
                       {project.tech[0] || 'Full-Stack'}
                     </Badge>
                     {project.show_client_name ? (
-                      <span className="text-xs font-mono text-[#94a3b8]">
-                        Client: <strong className="text-[#f8fafc]">{project.client_name}</strong>
+                      <span className="text-xs font-mono text-[var(--text-muted)]">
+                        Client: <strong className="text-[var(--text-primary)]">{project.client_name}</strong>
                       </span>
                     ) : (
-                      <span className="text-xs font-mono text-[#64748b] flex items-center gap-1">
-                        <ShieldAlert className="w-3 h-3 text-[#f59e0b]" />
+                      <span className="text-xs font-mono text-[var(--text-muted)] flex items-center gap-1">
+                        <ShieldAlert className="w-3 h-3 text-[var(--warn-color)]" />
                         Client Name Confidential
                       </span>
                     )}
@@ -98,35 +98,35 @@ export const FeaturedProjectsSection: React.FC<FeaturedProjectsSectionProps> = (
                   {/* Title & Summary */}
                   <h3
                     onClick={() => onSelectProject(project)}
-                    className="text-2xl font-bold text-[#f8fafc] hover:text-[#00e599] transition-colors cursor-pointer"
+                    className="text-2xl font-bold text-[var(--text-primary)] hover:text-[var(--accent-color)] transition-colors cursor-pointer"
                   >
                     {project.title}
                   </h3>
-                  <p className="text-sm text-[#94a3b8] leading-relaxed">
+                  <p className="text-sm text-[var(--text-muted)] leading-relaxed">
                     {project.summary}
                   </p>
 
                   {/* Problem vs. What I Built Accordion */}
-                  <div className="space-y-2 text-xs bg-[#0a0e17] p-4 rounded-xl border border-[#1e293b]">
+                  <div className="space-y-2 text-xs bg-[var(--bg-primary)] p-4 rounded-xl border border-[var(--border-color)]">
                     <div>
-                      <span className="text-[#64748b] font-mono font-semibold uppercase tracking-wider block mb-0.5">
+                      <span className="text-[var(--text-muted)] font-mono font-semibold uppercase tracking-wider block mb-0.5">
                         The Challenge:
                       </span>
-                      <p className="text-[#94a3b8] line-clamp-2">{project.problem}</p>
+                      <p className="text-[var(--text-muted)] line-clamp-2">{project.problem}</p>
                     </div>
-                    <div className="pt-2 border-t border-[#1e293b]">
-                      <span className="text-[#00e599] font-mono font-semibold uppercase tracking-wider block mb-0.5">
+                    <div className="pt-2 border-t border-[var(--border-color)]">
+                      <span className="text-[var(--accent-color)] font-mono font-semibold uppercase tracking-wider block mb-0.5">
                         What I Built:
                       </span>
-                      <p className="text-[#f8fafc] line-clamp-2">{project.solution}</p>
+                      <p className="text-[var(--text-primary)] line-clamp-2">{project.solution}</p>
                     </div>
                     {project.result && (
-                      <div className="pt-2 border-t border-[#1e293b]">
-                        <span className="text-[#38bdf8] font-mono font-semibold uppercase tracking-wider flex items-center gap-1 mb-0.5">
+                      <div className="pt-2 border-t border-[var(--border-color)]">
+                        <span className="text-[var(--blue-accent)] font-mono font-semibold uppercase tracking-wider flex items-center gap-1 mb-0.5">
                           <Sparkles className="w-3 h-3" />
                           Measurable Outcome:
                         </span>
-                        <p className="text-[#cbd5e1]">{project.result}</p>
+                        <p className="text-[var(--border-muted)]">{project.result}</p>
                       </div>
                     )}
                   </div>
@@ -136,7 +136,7 @@ export const FeaturedProjectsSection: React.FC<FeaturedProjectsSectionProps> = (
                     {project.tech.map((t) => (
                       <span
                         key={t}
-                        className="px-2.5 py-0.5 rounded-md bg-[#1e293b] text-xs font-mono text-[#94a3b8] border border-[#334155]"
+                        className="px-2.5 py-0.5 rounded-md bg-[var(--bg-surface-elevated)] text-xs font-mono text-[var(--text-muted)] border border-[var(--border-glow)]"
                       >
                         {t}
                       </span>
@@ -149,7 +149,7 @@ export const FeaturedProjectsSection: React.FC<FeaturedProjectsSectionProps> = (
                       variant="primary"
                       size="sm"
                       onClick={() => onSelectProject(project)}
-                      rightIcon={<ArrowRight className="w-3.5 h-3.5 text-[#0a0e17]" />}
+                      rightIcon={<ArrowRight className="w-3.5 h-3.5 text-[var(--bg-primary)]" />}
                     >
                       Case Study
                     </Button>
@@ -161,8 +161,8 @@ export const FeaturedProjectsSection: React.FC<FeaturedProjectsSectionProps> = (
                         rel="noopener noreferrer"
                         className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-medium transition-colors ${
                           project.live_url.includes('[')
-                            ? 'border-[#334155] text-[#64748b] cursor-not-allowed'
-                            : 'border-[#334155] text-[#f8fafc] hover:border-[#00e599]/50 hover:text-[#00e599]'
+                            ? 'border-[var(--border-glow)] text-[var(--text-muted)] cursor-not-allowed'
+                            : 'border-[var(--border-glow)] text-[var(--text-primary)] hover:border-[var(--accent-color)]/50 hover:text-[var(--accent-color)]'
                         }`}
                         title={project.live_url.includes('[') ? 'Live demo link placeholder' : 'Open live platform'}
                       >
@@ -178,8 +178,8 @@ export const FeaturedProjectsSection: React.FC<FeaturedProjectsSectionProps> = (
                         rel="noopener noreferrer"
                         className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-medium transition-colors ${
                           project.repo_url.includes('[')
-                            ? 'border-[#334155] text-[#64748b] cursor-not-allowed'
-                            : 'border-[#334155] text-[#f8fafc] hover:border-[#00e599]/50 hover:text-[#00e599]'
+                            ? 'border-[var(--border-glow)] text-[var(--text-muted)] cursor-not-allowed'
+                            : 'border-[var(--border-glow)] text-[var(--text-primary)] hover:border-[var(--accent-color)]/50 hover:text-[var(--accent-color)]'
                         }`}
                         title={project.repo_url.includes('[') ? 'GitHub repository placeholder' : 'View source on GitHub'}
                       >
@@ -201,7 +201,7 @@ export const FeaturedProjectsSection: React.FC<FeaturedProjectsSectionProps> = (
           variant="secondary"
           size="lg"
           onClick={() => onNavigate('/work')}
-          rightIcon={<ArrowRight className="w-4 h-4 text-[#00e599]" />}
+          rightIcon={<ArrowRight className="w-4 h-4 text-[var(--accent-color)]" />}
         >
           View All Projects & Architecture Archive
         </Button>

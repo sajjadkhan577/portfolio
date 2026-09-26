@@ -30,13 +30,13 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variantStyles = {
     primary:
-      'bg-[#00e599] hover:bg-[#00cc88] text-[#0a0e17] font-semibold shadow-lg shadow-[#00e599]/20 hover:shadow-[#00e599]/30 border border-[#00e599]',
+      'bg-[var(--accent-color)] hover:bg-[var(--accent-hover)] text-[var(--bg-primary)] font-semibold shadow-lg shadow-[var(--accent-color)]/20 hover:shadow-[var(--accent-color)]/30 border border-[var(--accent-color)]',
     secondary:
-      'bg-[#1e293b] hover:bg-[#273549] text-[#f8fafc] border border-[#334155]',
+      'bg-[var(--bg-surface-elevated)] hover:bg-[var(--bg-surface-dark)] text-[var(--text-primary)] border border-[var(--border-glow)]',
     outline:
-      'bg-transparent hover:bg-[#1e293b]/50 text-[#f8fafc] border border-[#334155] hover:border-[#00e599]/50',
+      'bg-transparent hover:bg-[var(--bg-surface-elevated)]/50 text-[var(--text-primary)] border border-[var(--border-glow)] hover:border-[var(--accent-color)]/50',
     ghost:
-      'bg-transparent hover:bg-[#1e293b]/50 text-[#94a3b8] hover:text-[#f8fafc]',
+      'bg-transparent hover:bg-[var(--bg-surface-elevated)]/50 text-[var(--text-muted)] hover:text-[var(--text-primary)]',
     danger:
       'bg-rose-600 hover:bg-rose-700 text-white font-medium border border-rose-500',
   };
@@ -84,9 +84,9 @@ export const Card: React.FC<React.HTMLAttributes<HTMLDivElement> & { hoverEffect
 }) => {
   return (
     <div
-      className={`bg-[#111827] border border-[#1e293b] rounded-2xl p-6 transition-all duration-300 ${
+      className={`bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 transition-all duration-300 ${
         hoverEffect
-          ? 'hover:border-[#334155] hover:shadow-xl hover:shadow-black/40 hover:-translate-y-0.5'
+          ? 'hover:border-[var(--border-glow)] hover:shadow-xl hover:shadow-black/40 hover:-translate-y-0.5'
           : ''
       } ${className}`}
       {...props}
@@ -102,8 +102,8 @@ export const Badge: React.FC<{
   className?: string;
 }> = ({ children, variant = 'neutral', className = '' }) => {
   const styles = {
-    accent: 'bg-[#00e599]/10 text-[#00e599] border-[#00e599]/30',
-    neutral: 'bg-[#1e293b] text-[#94a3b8] border-[#334155]',
+    accent: 'bg-[var(--accent-color)]/10 text-[var(--accent-color)] border-[var(--accent-color)]/30',
+    neutral: 'bg-[var(--bg-surface-elevated)] text-[var(--text-muted)] border-[var(--border-glow)]',
     success: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
     warning: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
     error: 'bg-rose-500/10 text-rose-400 border-rose-500/30',

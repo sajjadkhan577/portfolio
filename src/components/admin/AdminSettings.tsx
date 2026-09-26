@@ -95,10 +95,10 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({ token }) => {
     <form onSubmit={handleSave} className="space-y-6 animate-fadeIn">
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-[#f8fafc]">
+          <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
             Site Settings & Global Parameters
           </h2>
-          <p className="text-xs text-[#94a3b8]">
+          <p className="text-xs text-[var(--text-muted)]">
             Configure hero headlines, client availability status, booking links, and search meta tags.
           </p>
         </div>
@@ -108,7 +108,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({ token }) => {
           variant="primary"
           size="md"
           isLoading={isSaving}
-          leftIcon={<Save className="w-4 h-4 text-[#0a0e17]" />}
+          leftIcon={<Save className="w-4 h-4 text-[var(--bg-primary)]" />}
         >
           {saveSuccess ? 'Saved Successfully!' : 'Save Site Settings'}
         </Button>
@@ -128,9 +128,9 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({ token }) => {
       )}
 
       {/* Hero & Availability */}
-      <Card className="border-[#1e293b] bg-[#111827] p-6 space-y-4">
-        <h3 className="font-bold text-[#f8fafc] text-base flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-[#00e599]" />
+      <Card className="border-[var(--border-color)] bg-[var(--bg-surface)] p-6 space-y-4">
+        <h3 className="font-bold text-[var(--text-primary)] text-base flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-[var(--accent-color)]" />
           Hero Headline & Availability
         </h3>
 
@@ -157,14 +157,14 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({ token }) => {
             />
 
             <div className="pt-5">
-              <label className="flex items-center gap-2 text-xs text-[#f8fafc] cursor-pointer">
+              <label className="flex items-center gap-2 text-xs text-[var(--text-primary)] cursor-pointer">
                 <input
                   type="checkbox"
                   checked={settings.availability_open}
                   onChange={(e) =>
                     setSettings({ ...settings, availability_open: e.target.checked })
                   }
-                  className="rounded bg-[#0a0e17] border-[#1e293b] text-[#00e599]"
+                  className="rounded bg-[var(--bg-primary)] border-[var(--border-color)] text-[var(--accent-color)]"
                 />
                 <span>Open for Client Inquiries (Green Pulse Dot)</span>
               </label>
@@ -174,9 +174,9 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({ token }) => {
       </Card>
 
       {/* Communication & Social Channels */}
-      <Card className="border-[#1e293b] bg-[#111827] p-6 space-y-4">
-        <h3 className="font-bold text-[#f8fafc] text-base flex items-center gap-2">
-          <Share2 className="w-4 h-4 text-[#00e599]" />
+      <Card className="border-[var(--border-color)] bg-[var(--bg-surface)] p-6 space-y-4">
+        <h3 className="font-bold text-[var(--text-primary)] text-base flex items-center gap-2">
+          <Share2 className="w-4 h-4 text-[var(--accent-color)]" />
           Direct Channels & Booking URLs
         </h3>
 
@@ -224,9 +224,9 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({ token }) => {
       </Card>
 
       {/* SEO & Meta */}
-      <Card className="border-[#1e293b] bg-[#111827] p-6 space-y-4">
-        <h3 className="font-bold text-[#f8fafc] text-base flex items-center gap-2">
-          <Globe className="w-4 h-4 text-[#00e599]" />
+      <Card className="border-[var(--border-color)] bg-[var(--bg-surface)] p-6 space-y-4">
+        <h3 className="font-bold text-[var(--text-primary)] text-base flex items-center gap-2">
+          <Globe className="w-4 h-4 text-[var(--accent-color)]" />
           Search Engine Optimization (SEO)
         </h3>
 

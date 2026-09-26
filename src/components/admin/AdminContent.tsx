@@ -133,13 +133,13 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
   return (
     <div className="space-y-6 animate-fadeIn">
       {/* Sub tabs */}
-      <div className="flex items-center gap-2 border-b border-[#1e293b] pb-4">
+      <div className="flex items-center gap-2 border-b border-[var(--border-color)] pb-4">
         <button
           onClick={() => setActiveSubTab('services')}
           className={`px-4 py-2 rounded-xl text-xs font-mono font-medium transition-colors cursor-pointer ${
             activeSubTab === 'services'
-              ? 'bg-[#00e599] text-[#0a0e17] font-bold'
-              : 'bg-[#111827] text-[#94a3b8] hover:text-[#f8fafc]'
+              ? 'bg-[var(--accent-color)] text-[var(--bg-primary)] font-bold'
+              : 'bg-[var(--bg-surface)] text-[var(--text-muted)] hover:text-[var(--text-primary)]'
           }`}
         >
           Services ({services.length})
@@ -148,8 +148,8 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
           onClick={() => setActiveSubTab('testimonials')}
           className={`px-4 py-2 rounded-xl text-xs font-mono font-medium transition-colors cursor-pointer ${
             activeSubTab === 'testimonials'
-              ? 'bg-[#00e599] text-[#0a0e17] font-bold'
-              : 'bg-[#111827] text-[#94a3b8] hover:text-[#f8fafc]'
+              ? 'bg-[var(--accent-color)] text-[var(--bg-primary)] font-bold'
+              : 'bg-[var(--bg-surface)] text-[var(--text-muted)] hover:text-[var(--text-primary)]'
           }`}
         >
           Testimonials ({testimonials.length})
@@ -158,8 +158,8 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
           onClick={() => setActiveSubTab('faqs')}
           className={`px-4 py-2 rounded-xl text-xs font-mono font-medium transition-colors cursor-pointer ${
             activeSubTab === 'faqs'
-              ? 'bg-[#00e599] text-[#0a0e17] font-bold'
-              : 'bg-[#111827] text-[#94a3b8] hover:text-[#f8fafc]'
+              ? 'bg-[var(--accent-color)] text-[var(--bg-primary)] font-bold'
+              : 'bg-[var(--bg-surface)] text-[var(--text-muted)] hover:text-[var(--text-primary)]'
           }`}
         >
           FAQs ({faqs.length})
@@ -170,7 +170,7 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
       {activeSubTab === 'services' && (
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <span className="text-xs text-[#94a3b8]">Specialized Services list</span>
+            <span className="text-xs text-[var(--text-muted)]">Specialized Services list</span>
             <Button
               size="sm"
               variant="primary"
@@ -183,7 +183,7 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
                   published: true,
                 })
               }
-              leftIcon={<Plus className="w-4 h-4 text-[#0a0e17]" />}
+              leftIcon={<Plus className="w-4 h-4 text-[var(--bg-primary)]" />}
             >
               Add Service
             </Button>
@@ -191,15 +191,15 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {services.map((s) => (
-              <Card key={s.id} className="border-[#1e293b] bg-[#111827] p-5 space-y-3">
+              <Card key={s.id} className="border-[var(--border-color)] bg-[var(--bg-surface)] p-5 space-y-3">
                 <div className="flex items-center justify-between">
-                  <h4 className="font-bold text-[#f8fafc] text-base">{s.title}</h4>
+                  <h4 className="font-bold text-[var(--text-primary)] text-base">{s.title}</h4>
                   <Badge variant={s.published ? 'success' : 'neutral'}>
                     {s.published ? 'Live' : 'Draft'}
                   </Badge>
                 </div>
-                <p className="text-xs text-[#94a3b8] leading-relaxed">{s.description}</p>
-                <div className="pt-2 flex items-center justify-end gap-2 border-t border-[#1e293b]">
+                <p className="text-xs text-[var(--text-muted)] leading-relaxed">{s.description}</p>
+                <div className="pt-2 flex items-center justify-end gap-2 border-t border-[var(--border-color)]">
                   <Button
                     size="sm"
                     variant="outline"
@@ -210,7 +210,7 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
                   </Button>
                   <button
                     onClick={() => deleteService(s.id)}
-                    className="p-1.5 rounded-lg text-[#94a3b8] hover:text-rose-400"
+                    className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-rose-400"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -225,7 +225,7 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
       {activeSubTab === 'testimonials' && (
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <span className="text-xs text-[#94a3b8]">Verified client testimonials</span>
+            <span className="text-xs text-[var(--text-muted)]">Verified client testimonials</span>
             <Button
               size="sm"
               variant="primary"
@@ -239,7 +239,7 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
                   published: true,
                 })
               }
-              leftIcon={<Plus className="w-4 h-4 text-[#0a0e17]" />}
+              leftIcon={<Plus className="w-4 h-4 text-[var(--bg-primary)]" />}
             >
               Add Testimonial
             </Button>
@@ -247,18 +247,18 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
 
           <div className="space-y-4">
             {testimonials.map((t) => (
-              <Card key={t.id} className="border-[#1e293b] bg-[#111827] p-5 space-y-3">
+              <Card key={t.id} className="border-[var(--border-color)] bg-[var(--bg-surface)] p-5 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-[#f8fafc]">{t.author_name}</span>
-                    <span className="text-xs text-[#94a3b8]">({t.author_role})</span>
+                    <span className="font-bold text-[var(--text-primary)]">{t.author_name}</span>
+                    <span className="text-xs text-[var(--text-muted)]">({t.author_role})</span>
                   </div>
                   <Badge variant={t.published ? 'success' : 'neutral'}>
                     {t.published ? 'Published' : 'Hidden'}
                   </Badge>
                 </div>
-                <p className="text-xs sm:text-sm text-[#94a3b8] italic">"{t.quote}"</p>
-                <div className="pt-2 flex items-center justify-end gap-2 border-t border-[#1e293b]">
+                <p className="text-xs sm:text-sm text-[var(--text-muted)] italic">"{t.quote}"</p>
+                <div className="pt-2 flex items-center justify-end gap-2 border-t border-[var(--border-color)]">
                   <Button
                     size="sm"
                     variant="outline"
@@ -269,7 +269,7 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
                   </Button>
                   <button
                     onClick={() => deleteTestimonial(t.id)}
-                    className="p-1.5 rounded-lg text-[#94a3b8] hover:text-rose-400"
+                    className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-rose-400"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -284,7 +284,7 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
       {activeSubTab === 'faqs' && (
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <span className="text-xs text-[#94a3b8]">Frequently Asked Questions</span>
+            <span className="text-xs text-[var(--text-muted)]">Frequently Asked Questions</span>
             <Button
               size="sm"
               variant="primary"
@@ -296,7 +296,7 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
                   published: true,
                 })
               }
-              leftIcon={<Plus className="w-4 h-4 text-[#0a0e17]" />}
+              leftIcon={<Plus className="w-4 h-4 text-[var(--bg-primary)]" />}
             >
               Add FAQ
             </Button>
@@ -304,15 +304,15 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
 
           <div className="space-y-3">
             {faqs.map((f) => (
-              <Card key={f.id} className="border-[#1e293b] bg-[#111827] p-4 space-y-2">
+              <Card key={f.id} className="border-[var(--border-color)] bg-[var(--bg-surface)] p-4 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-[#f8fafc] text-sm">{f.question}</span>
+                  <span className="font-bold text-[var(--text-primary)] text-sm">{f.question}</span>
                   <Badge variant={f.published ? 'success' : 'neutral'}>
                     {f.published ? 'Live' : 'Draft'}
                   </Badge>
                 </div>
-                <p className="text-xs text-[#94a3b8] leading-relaxed">{f.answer}</p>
-                <div className="pt-2 flex items-center justify-end gap-2 border-t border-[#1e293b]">
+                <p className="text-xs text-[var(--text-muted)] leading-relaxed">{f.answer}</p>
+                <div className="pt-2 flex items-center justify-end gap-2 border-t border-[var(--border-color)]">
                   <Button
                     size="sm"
                     variant="outline"
@@ -323,7 +323,7 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
                   </Button>
                   <button
                     onClick={() => deleteFaq(f.id)}
-                    className="p-1.5 rounded-lg text-[#94a3b8] hover:text-rose-400"
+                    className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-rose-400"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -337,8 +337,8 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
       {/* Edit Service Modal */}
       {editingService && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <Card className="w-full max-w-lg border-[#1e293b] bg-[#111827] p-6 space-y-4 shadow-2xl">
-            <h3 className="font-bold text-[#f8fafc] text-lg">Edit Service</h3>
+          <Card className="w-full max-w-lg border-[var(--border-color)] bg-[var(--bg-surface)] p-6 space-y-4 shadow-2xl">
+            <h3 className="font-bold text-[var(--text-primary)] text-lg">Edit Service</h3>
             <Input
               label="Service Title"
               value={editingService.title || ''}
@@ -355,7 +355,7 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
               value={editingService.icon || 'Wrench'}
               onChange={(e) => setEditingService({ ...editingService, icon: e.target.value })}
             />
-            <label className="flex items-center gap-2 text-xs text-[#f8fafc]">
+            <label className="flex items-center gap-2 text-xs text-[var(--text-primary)]">
               <input
                 type="checkbox"
                 checked={editingService.published || false}
@@ -365,7 +365,7 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
               />
               <span>Published on Website</span>
             </label>
-            <div className="flex justify-end gap-2 pt-2 border-t border-[#1e293b]">
+            <div className="flex justify-end gap-2 pt-2 border-t border-[var(--border-color)]">
               <Button variant="ghost" size="sm" onClick={() => setEditingService(null)}>
                 Cancel
               </Button>
@@ -380,8 +380,8 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
       {/* Edit Testimonial Modal */}
       {editingTestimonial && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <Card className="w-full max-w-lg border-[#1e293b] bg-[#111827] p-6 space-y-4 shadow-2xl">
-            <h3 className="font-bold text-[#f8fafc] text-lg">Edit Testimonial</h3>
+          <Card className="w-full max-w-lg border-[var(--border-color)] bg-[var(--bg-surface)] p-6 space-y-4 shadow-2xl">
+            <h3 className="font-bold text-[var(--text-primary)] text-lg">Edit Testimonial</h3>
             <Input
               label="Author Name"
               value={editingTestimonial.author_name || ''}
@@ -404,7 +404,7 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
                 setEditingTestimonial({ ...editingTestimonial, quote: e.target.value })
               }
             />
-            <label className="flex items-center gap-2 text-xs text-[#f8fafc]">
+            <label className="flex items-center gap-2 text-xs text-[var(--text-primary)]">
               <input
                 type="checkbox"
                 checked={editingTestimonial.published || false}
@@ -414,7 +414,7 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
               />
               <span>Visible on Site</span>
             </label>
-            <div className="flex justify-end gap-2 pt-2 border-t border-[#1e293b]">
+            <div className="flex justify-end gap-2 pt-2 border-t border-[var(--border-color)]">
               <Button variant="ghost" size="sm" onClick={() => setEditingTestimonial(null)}>
                 Cancel
               </Button>
@@ -429,8 +429,8 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
       {/* Edit FAQ Modal */}
       {editingFaq && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <Card className="w-full max-w-lg border-[#1e293b] bg-[#111827] p-6 space-y-4 shadow-2xl">
-            <h3 className="font-bold text-[#f8fafc] text-lg">Edit FAQ</h3>
+          <Card className="w-full max-w-lg border-[var(--border-color)] bg-[var(--bg-surface)] p-6 space-y-4 shadow-2xl">
+            <h3 className="font-bold text-[var(--text-primary)] text-lg">Edit FAQ</h3>
             <Input
               label="Question"
               value={editingFaq.question || ''}
@@ -442,7 +442,7 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
               value={editingFaq.answer || ''}
               onChange={(e) => setEditingFaq({ ...editingFaq, answer: e.target.value })}
             />
-            <label className="flex items-center gap-2 text-xs text-[#f8fafc]">
+            <label className="flex items-center gap-2 text-xs text-[var(--text-primary)]">
               <input
                 type="checkbox"
                 checked={editingFaq.published || false}
@@ -450,7 +450,7 @@ export const AdminContent: React.FC<AdminContentProps> = ({ token }) => {
               />
               <span>Visible in FAQ Accordion</span>
             </label>
-            <div className="flex justify-end gap-2 pt-2 border-t border-[#1e293b]">
+            <div className="flex justify-end gap-2 pt-2 border-t border-[var(--border-color)]">
               <Button variant="ghost" size="sm" onClick={() => setEditingFaq(null)}>
                 Cancel
               </Button>

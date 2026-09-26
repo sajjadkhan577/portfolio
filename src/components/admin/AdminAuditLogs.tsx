@@ -44,10 +44,10 @@ export const AdminAuditLogs: React.FC<AdminAuditLogsProps> = ({ token }) => {
     <div className="space-y-6 animate-fadeIn">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-[#f8fafc]">
+          <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
             Security Audit Trail & Activity Logs
           </h2>
-          <p className="text-xs text-[#94a3b8]">
+          <p className="text-xs text-[var(--text-muted)]">
             Immutable record of all administrative actions, data edits, status modifications, and logins.
           </p>
         </div>
@@ -57,25 +57,25 @@ export const AdminAuditLogs: React.FC<AdminAuditLogsProps> = ({ token }) => {
           variant="outline"
           onClick={fetchLogs}
           isLoading={isLoading}
-          leftIcon={<RefreshCw className="w-3.5 h-3.5 text-[#00e599]" />}
+          leftIcon={<RefreshCw className="w-3.5 h-3.5 text-[var(--accent-color)]" />}
         >
           Refresh Logs
         </Button>
       </div>
 
-      <Card className="border-[#1e293b] bg-[#111827] p-0 overflow-hidden">
+      <Card className="border-[var(--border-color)] bg-[var(--bg-surface)] p-0 overflow-hidden">
         {isLoading ? (
-          <div className="p-8 text-center text-xs font-mono text-[#94a3b8]">
+          <div className="p-8 text-center text-xs font-mono text-[var(--text-muted)]">
             Loading audit events...
           </div>
         ) : logs.length === 0 ? (
-          <div className="p-8 text-center text-xs text-[#64748b]">
+          <div className="p-8 text-center text-xs text-[var(--text-muted)]">
             No audit records logged yet.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
-              <thead className="bg-[#0a0e17] text-[#94a3b8] border-b border-[#1e293b]">
+              <thead className="bg-[var(--bg-primary)] text-[var(--text-muted)] border-b border-[var(--border-color)]">
                 <tr>
                   <th className="py-3 px-4">Timestamp</th>
                   <th className="py-3 px-4">Admin Email</th>
@@ -84,18 +84,18 @@ export const AdminAuditLogs: React.FC<AdminAuditLogsProps> = ({ token }) => {
                   <th className="py-3 px-4">Details</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#1e293b]">
+              <tbody className="divide-y divide-[var(--bg-surface-elevated)]">
                 {logs.map((log) => (
-                  <tr key={log.id} className="hover:bg-[#1e293b]/30">
-                    <td className="py-3 px-4 text-[#94a3b8]">
+                  <tr key={log.id} className="hover:bg-[var(--bg-surface-elevated)]/30">
+                    <td className="py-3 px-4 text-[var(--text-muted)]">
                       {new Date(log.created_at).toLocaleString()}
                     </td>
-                    <td className="py-3 px-4 text-[#f8fafc]">{log.admin_email}</td>
+                    <td className="py-3 px-4 text-[var(--text-primary)]">{log.admin_email}</td>
                     <td className="py-3 px-4">
                       <Badge variant="accent">{log.action}</Badge>
                     </td>
                     <td className="py-3 px-4 text-sky-400">{log.entity}</td>
-                    <td className="py-3 px-4 text-[#94a3b8] max-w-xs truncate">
+                    <td className="py-3 px-4 text-[var(--text-muted)] max-w-xs truncate">
                       {log.details ? JSON.stringify(log.details) : '—'}
                     </td>
                   </tr>

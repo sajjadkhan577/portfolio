@@ -15,24 +15,24 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-xs font-semibold uppercase tracking-wider text-[#94a3b8] mb-1.5"
+            className="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1.5"
           >
             {label}
-            {props.required && <span className="text-[#00e599] ml-1">*</span>}
+            {props.required && <span className="text-[var(--accent-color)] ml-1">*</span>}
           </label>
         )}
         <input
           ref={ref}
           id={inputId}
-          className={`w-full px-3.5 py-2.5 bg-[#0a0e17] text-[#f8fafc] border ${
-            error ? 'border-rose-500 focus:border-rose-400' : 'border-[#1e293b] focus:border-[#00e599]'
-          } rounded-xl text-sm transition-colors duration-200 placeholder:text-[#64748b] focus:outline-none focus:ring-1 ${
-            error ? 'focus:ring-rose-500' : 'focus:ring-[#00e599]'
+          className={`w-full px-3.5 py-2.5 bg-[var(--bg-primary)] text-[var(--text-primary)] border ${
+            error ? 'border-rose-500 focus:border-rose-400' : 'border-[var(--border-color)] focus:border-[var(--accent-color)]'
+          } rounded-xl text-sm transition-colors duration-200 placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-1 ${
+            error ? 'focus:ring-rose-500' : 'focus:ring-[var(--accent-color)]'
           } ${className}`}
           {...props}
         />
         {error && <p className="mt-1 text-xs text-rose-400">{error}</p>}
-        {helperText && !error && <p className="mt-1 text-xs text-[#64748b]">{helperText}</p>}
+        {helperText && !error && <p className="mt-1 text-xs text-[var(--text-muted)]">{helperText}</p>}
       </div>
     );
   }
@@ -54,24 +54,24 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         {label && (
           <label
             htmlFor={textareaId}
-            className="block text-xs font-semibold uppercase tracking-wider text-[#94a3b8] mb-1.5"
+            className="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1.5"
           >
             {label}
-            {props.required && <span className="text-[#00e599] ml-1">*</span>}
+            {props.required && <span className="text-[var(--accent-color)] ml-1">*</span>}
           </label>
         )}
         <textarea
           ref={ref}
           id={textareaId}
-          className={`w-full px-3.5 py-2.5 bg-[#0a0e17] text-[#f8fafc] border ${
-            error ? 'border-rose-500 focus:border-rose-400' : 'border-[#1e293b] focus:border-[#00e599]'
-          } rounded-xl text-sm transition-colors duration-200 placeholder:text-[#64748b] focus:outline-none focus:ring-1 ${
-            error ? 'focus:ring-rose-500' : 'focus:ring-[#00e599]'
+          className={`w-full px-3.5 py-2.5 bg-[var(--bg-primary)] text-[var(--text-primary)] border ${
+            error ? 'border-rose-500 focus:border-rose-400' : 'border-[var(--border-color)] focus:border-[var(--accent-color)]'
+          } rounded-xl text-sm transition-colors duration-200 placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-1 ${
+            error ? 'focus:ring-rose-500' : 'focus:ring-[var(--accent-color)]'
           } ${className}`}
           {...props}
         />
         {error && <p className="mt-1 text-xs text-rose-400">{error}</p>}
-        {helperText && !error && <p className="mt-1 text-xs text-[#64748b]">{helperText}</p>}
+        {helperText && !error && <p className="mt-1 text-xs text-[var(--text-muted)]">{helperText}</p>}
       </div>
     );
   }
@@ -93,24 +93,24 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         {label && (
           <label
             htmlFor={selectId}
-            className="block text-xs font-semibold uppercase tracking-wider text-[#94a3b8] mb-1.5"
+            className="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1.5"
           >
             {label}
-            {props.required && <span className="text-[#00e599] ml-1">*</span>}
+            {props.required && <span className="text-[var(--accent-color)] ml-1">*</span>}
           </label>
         )}
         <select
           ref={ref}
           id={selectId}
-          className={`w-full px-3.5 py-2.5 bg-[#0a0e17] text-[#f8fafc] border ${
-            error ? 'border-rose-500 focus:border-rose-400' : 'border-[#1e293b] focus:border-[#00e599]'
+          className={`w-full px-3.5 py-2.5 bg-[var(--bg-primary)] text-[var(--text-primary)] border ${
+            error ? 'border-rose-500 focus:border-rose-400' : 'border-[var(--border-color)] focus:border-[var(--accent-color)]'
           } rounded-xl text-sm transition-colors duration-200 focus:outline-none focus:ring-1 ${
-            error ? 'focus:ring-rose-500' : 'focus:ring-[#00e599]'
+            error ? 'focus:ring-rose-500' : 'focus:ring-[var(--accent-color)]'
           } ${className}`}
           {...props}
         >
           {options.map((opt) => (
-            <option key={opt.value} value={opt.value} className="bg-[#111827] text-[#f8fafc]">
+            <option key={opt.value} value={opt.value} className="bg-[var(--bg-surface)] text-[var(--text-primary)]">
               {opt.label}
             </option>
           ))}
@@ -138,19 +138,19 @@ export const Section: React.FC<{
           <div className="max-w-3xl mb-12 sm:mb-16">
             {eyebrow && (
               <div className="flex items-center gap-2 mb-3">
-                <span className="w-2 h-2 rounded-full bg-[#00e599]"></span>
-                <span className="text-xs font-mono font-semibold uppercase tracking-wider text-[#00e599]">
+                <span className="w-2 h-2 rounded-full bg-[var(--accent-color)]"></span>
+                <span className="text-xs font-mono font-semibold uppercase tracking-wider text-[var(--accent-color)]">
                   {eyebrow}
                 </span>
               </div>
             )}
             {title && (
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#f8fafc] tracking-tight leading-tight">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[var(--text-primary)] tracking-tight leading-tight">
                 {title}
               </h2>
             )}
             {subtitle && (
-              <p className="mt-3 sm:mt-4 text-base sm:text-lg text-[#94a3b8] leading-relaxed">
+              <p className="mt-3 sm:mt-4 text-base sm:text-lg text-[var(--text-muted)] leading-relaxed">
                 {subtitle}
               </p>
             )}

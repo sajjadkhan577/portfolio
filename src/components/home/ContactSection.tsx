@@ -130,15 +130,15 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
         {/* Left Column: Direct Booking & Fast Channels */}
         <div className="lg:col-span-5 space-y-6">
           {/* Calendar Booking Card */}
-          <Card className="border-[#1e293b] bg-gradient-to-br from-[#111827] to-[#0a0e17] p-6 space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-[#00e599]/10 border border-[#00e599]/30 flex items-center justify-center text-[#00e599]">
+          <Card className="border-[var(--border-color)] bg-gradient-to-br from-[var(--bg-surface)] to-[var(--bg-primary)] p-6 space-y-4">
+            <div className="w-12 h-12 rounded-xl bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/30 flex items-center justify-center text-[var(--accent-color)]">
               <Calendar className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-[#f8fafc]">
+              <h3 className="text-xl font-bold text-[var(--text-primary)]">
                 Schedule a Free Strategy Call
               </h3>
-              <p className="text-xs sm:text-sm text-[#94a3b8] mt-1.5 leading-relaxed">
+              <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1.5 leading-relaxed">
                 20-minute video discussion to explore your architecture requirements, timeline milestones, and exact budget estimate.
               </p>
             </div>
@@ -152,7 +152,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 }
                 target={settings.booking_url && !settings.booking_url.includes('[') ? '_blank' : undefined}
                 rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#00e599] hover:bg-[#00cc88] text-[#0a0e17] font-semibold text-sm transition-all shadow-md shadow-[#00e599]/20"
+                className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[var(--accent-color)] hover:bg-[var(--accent-hover)] text-[var(--bg-primary)] font-semibold text-sm transition-all shadow-md shadow-[var(--accent-color)]/20"
               >
                 <Calendar className="w-4 h-4" />
                 <span>
@@ -166,26 +166,26 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
           </Card>
 
           {/* Direct Channels List */}
-          <Card className="border-[#1e293b] bg-[#111827] p-6 space-y-4">
-            <h4 className="text-xs font-mono font-semibold uppercase tracking-wider text-[#64748b]">
+          <Card className="border-[var(--border-color)] bg-[var(--bg-surface)] p-6 space-y-4">
+            <h4 className="text-xs font-mono font-semibold uppercase tracking-wider text-[var(--text-muted)]">
               Direct Contact Channels
             </h4>
 
             <div className="space-y-3 text-sm">
               <a
                 href={`mailto:${settings.contact_email}`}
-                className="flex items-center justify-between p-3 rounded-xl bg-[#0a0e17] border border-[#1e293b] hover:border-[#00e599]/40 group transition-colors"
+                className="flex items-center justify-between p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] hover:border-[var(--accent-color)]/40 group transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Mail className="w-4 h-4 text-[#00e599]" />
+                  <Mail className="w-4 h-4 text-[var(--accent-color)]" />
                   <div>
-                    <span className="text-xs text-[#64748b] block">Direct Email</span>
-                    <span className="text-xs sm:text-sm font-mono text-[#f8fafc] group-hover:text-[#00e599] transition-colors">
+                    <span className="text-xs text-[var(--text-muted)] block">Direct Email</span>
+                    <span className="text-xs sm:text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--accent-color)] transition-colors">
                       {settings.contact_email}
                     </span>
                   </div>
                 </div>
-                <ExternalLink className="w-3.5 h-3.5 text-[#64748b]" />
+                <ExternalLink className="w-3.5 h-3.5 text-[var(--text-muted)]" />
               </a>
 
               {settings.whatsapp && (
@@ -193,18 +193,18 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   href={`https://wa.me/${settings.whatsapp.replace(/[^0-9]/g, '')}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between p-3 rounded-xl bg-[#0a0e17] border border-[#1e293b] hover:border-[#00e599]/40 group transition-colors"
+                  className="flex items-center justify-between p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] hover:border-[var(--accent-color)]/40 group transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <MessageSquare className="w-4 h-4 text-[#00e599]" />
+                    <MessageSquare className="w-4 h-4 text-[var(--accent-color)]" />
                     <div>
-                      <span className="text-xs text-[#64748b] block">WhatsApp</span>
-                      <span className="text-xs sm:text-sm font-mono text-[#f8fafc] group-hover:text-[#00e599] transition-colors">
+                      <span className="text-xs text-[var(--text-muted)] block">WhatsApp</span>
+                      <span className="text-xs sm:text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--accent-color)] transition-colors">
                         {settings.whatsapp}
                       </span>
                     </div>
                   </div>
-                  <ExternalLink className="w-3.5 h-3.5 text-[#64748b]" />
+                  <ExternalLink className="w-3.5 h-3.5 text-[var(--text-muted)]" />
                 </a>
               )}
 
@@ -213,18 +213,18 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   href={settings.linkedin_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between p-3 rounded-xl bg-[#0a0e17] border border-[#1e293b] hover:border-[#00e599]/40 group transition-colors"
+                  className="flex items-center justify-between p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] hover:border-[var(--accent-color)]/40 group transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <Linkedin className="w-4 h-4 text-[#00e599]" />
+                    <Linkedin className="w-4 h-4 text-[var(--accent-color)]" />
                     <div>
-                      <span className="text-xs text-[#64748b] block">LinkedIn</span>
-                      <span className="text-xs sm:text-sm text-[#f8fafc] group-hover:text-[#00e599] transition-colors">
+                      <span className="text-xs text-[var(--text-muted)] block">LinkedIn</span>
+                      <span className="text-xs sm:text-sm text-[var(--text-primary)] group-hover:text-[var(--accent-color)] transition-colors">
                         sajjad-khan-dev
                       </span>
                     </div>
                   </div>
-                  <ExternalLink className="w-3.5 h-3.5 text-[#64748b]" />
+                  <ExternalLink className="w-3.5 h-3.5 text-[var(--text-muted)]" />
                 </a>
               )}
 
@@ -233,18 +233,18 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   href={settings.github_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between p-3 rounded-xl bg-[#0a0e17] border border-[#1e293b] hover:border-[#00e599]/40 group transition-colors"
+                  className="flex items-center justify-between p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] hover:border-[var(--accent-color)]/40 group transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <Github className="w-4 h-4 text-[#00e599]" />
+                    <Github className="w-4 h-4 text-[var(--accent-color)]" />
                     <div>
-                      <span className="text-xs text-[#64748b] block">GitHub Repos</span>
-                      <span className="text-xs sm:text-sm text-[#f8fafc] group-hover:text-[#00e599] transition-colors">
+                      <span className="text-xs text-[var(--text-muted)] block">GitHub Repos</span>
+                      <span className="text-xs sm:text-sm text-[var(--text-primary)] group-hover:text-[var(--accent-color)] transition-colors">
                         sajjadkhan577
                       </span>
                     </div>
                   </div>
-                  <ExternalLink className="w-3.5 h-3.5 text-[#64748b]" />
+                  <ExternalLink className="w-3.5 h-3.5 text-[var(--text-muted)]" />
                 </a>
               )}
             </div>
@@ -253,11 +253,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
 
         {/* Right Column: Validated Project Inquiry Form */}
         <div className="lg:col-span-7">
-          <Card className="border-[#1e293b] bg-[#111827] p-6 sm:p-8">
-            <h3 className="text-xl font-bold text-[#f8fafc] mb-2">
+          <Card className="border-[var(--border-color)] bg-[var(--bg-surface)] p-6 sm:p-8">
+            <h3 className="text-xl font-bold text-[var(--text-primary)] mb-2">
               Send a Detailed Project Inquiry
             </h3>
-            <p className="text-xs sm:text-sm text-[#94a3b8] mb-6">
+            <p className="text-xs sm:text-sm text-[var(--text-muted)] mb-6">
               Fill out this form and I will reply within 24 hours with architectural suggestions and a preliminary scope.
             </p>
 
@@ -347,21 +347,21 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   size="lg"
                   className="w-full"
                   isLoading={isSubmitting}
-                  leftIcon={<Send className="w-4 h-4 text-[#0a0e17]" />}
+                  leftIcon={<Send className="w-4 h-4 text-[var(--bg-primary)]" />}
                 >
                   Send Project Inquiry
                 </Button>
               </div>
 
-              <div className="pt-2 flex items-center justify-between text-[11px] font-mono text-[#64748b]">
+              <div className="pt-2 flex items-center justify-between text-[11px] font-mono text-[var(--text-muted)]">
                 <span>✓ IP Rate-Limited & Honeypot Protected</span>
                 <span>✓ Direct Inbox Delivery</span>
               </div>
 
               {/* Privacy Note */}
-              <div className="p-3 rounded-xl bg-[#0a0e17] border border-[#1e293b] text-left">
-                <p className="text-[11px] text-[#94a3b8] leading-relaxed">
-                  <strong className="text-[#f8fafc] font-semibold">🔒 Privacy Guarantee:</strong> Your contact information and project details are held in strict confidence. I never sell your data, send marketing spam, or share client project details without explicit written consent.
+              <div className="p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-left">
+                <p className="text-[11px] text-[var(--text-muted)] leading-relaxed">
+                  <strong className="text-[var(--text-primary)] font-semibold">🔒 Privacy Guarantee:</strong> Your contact information and project details are held in strict confidence. I never sell your data, send marketing spam, or share client project details without explicit written consent.
                 </p>
               </div>
             </form>
