@@ -324,5 +324,5 @@ export const initialFAQs: FAQ[] = [
   },
 ];
 
-export const initialSettings = initialSiteSettings;s
+export const initialSettings = initialSiteSettings;
 export const initialFaqs = initialFAQs;
