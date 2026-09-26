@@ -10,7 +10,7 @@ import {
   X,
   Sparkles,
 } from 'lucide-react';
-import { Project } from '../../data/initialData';
+import { Project, initialProjects } from '../../data/initialData';
 import { Card, Button, Badge } from '../ui/Button';
 import { Input, Textarea } from '../ui/FormElements';
 
@@ -19,22 +19,25 @@ interface AdminProjectsProps {
 }
 
 export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [projects, setProjects] = useState<Project[]>(initialProjects);
+  const [isLoading, setIsLoading] = useState(false);
   const [editingProject, setEditingProject] = useState<Partial<Project> | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [techInput, setTechInput] = useState('');
 
   const fetchProjects = async () => {
-    setIsLoading(true);
     try {
       const res = await fetch('/api/admin/projects', {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const data = await res.json();
-      setProjects(data);
+      if (res.ok) {
+        const data = await res.json().catch(() => null);
+        if (Array.isArray(data) && data.length > 0) {
+          setProjects(data);
+        }
+      }
     } catch (err) {
-      console.error('Fetch projects error:', err);
+      console.warn('Using default projects fallback:', err);
     } finally {
       setIsLoading(false);
     }
