@@ -746,6 +746,33 @@ app.post('/api/admin/projects', requireAdmin, async (req: Request, res: Response
 
   memoryDb.projects.push(newProject);
 
+  // Persist to Supabase when configured (critical for Vercel stateless deployments)
+  if (supabaseAdmin) {
+    try {
+      const { error } = await supabaseAdmin.from('projects').insert({
+        title: newProject.title,
+        slug: newProject.slug,
+        summary: newProject.summary,
+        problem: newProject.problem,
+        solution: newProject.solution,
+        result: newProject.result,
+        tech: newProject.tech,
+        cover_image_url: newProject.cover_image_url,
+        gallery: newProject.gallery,
+        live_url: newProject.live_url,
+        repo_url: newProject.repo_url,
+        client_name: newProject.client_name,
+        show_client_name: newProject.show_client_name,
+        featured: newProject.featured,
+        sort_order: newProject.sort_order,
+        published: newProject.published,
+      });
+      if (error) console.warn('Supabase project insert warning:', error.message);
+    } catch (err) {
+      console.warn('Supabase project insert exception:', err);
+    }
+  }
+
   const adminEmail = (req as Request & { adminUser?: { email: string } }).adminUser?.email || 'admin';
   await logAdminAction({
     userEmail: adminEmail,
@@ -773,6 +800,36 @@ app.put('/api/admin/projects/:id', requireAdmin, async (req: Request, res: Respo
   };
   memoryDb.projects[index] = updated;
 
+  // Persist to Supabase when configured
+  if (supabaseAdmin) {
+    try {
+      const { error } = await supabaseAdmin
+        .from('projects')
+        .update({
+          title: updated.title,
+          slug: updated.slug,
+          summary: updated.summary,
+          problem: updated.problem,
+          solution: updated.solution,
+          result: updated.result,
+          tech: updated.tech,
+          cover_image_url: updated.cover_image_url,
+          gallery: updated.gallery,
+          live_url: updated.live_url,
+          repo_url: updated.repo_url,
+          client_name: updated.client_name,
+          show_client_name: updated.show_client_name,
+          featured: updated.featured,
+          sort_order: updated.sort_order,
+          published: updated.published,
+        })
+        .eq('id', id);
+      if (error) console.warn('Supabase project update warning:', error.message);
+    } catch (err) {
+      console.warn('Supabase project update exception:', err);
+    }
+  }
+
   const adminEmail = (req as Request & { adminUser?: { email: string } }).adminUser?.email || 'admin';
   await logAdminAction({
     userEmail: adminEmail,
@@ -788,6 +845,16 @@ app.put('/api/admin/projects/:id', requireAdmin, async (req: Request, res: Respo
 app.delete('/api/admin/projects/:id', requireAdmin, async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   memoryDb.projects = memoryDb.projects.filter((p) => p.id !== id);
+
+  // Persist to Supabase when configured
+  if (supabaseAdmin) {
+    try {
+      const { error } = await supabaseAdmin.from('projects').delete().eq('id', id);
+      if (error) console.warn('Supabase project delete warning:', error.message);
+    } catch (err) {
+      console.warn('Supabase project delete exception:', err);
+    }
+  }
 
   const adminEmail = (req as Request & { adminUser?: { email: string } }).adminUser?.email || 'admin';
   await logAdminAction({
@@ -815,6 +882,23 @@ app.post('/api/admin/services', requireAdmin, async (req: Request, res: Response
     published: req.body.published !== false,
   };
   memoryDb.services.push(newService);
+
+  // Persist to Supabase when configured
+  if (supabaseAdmin) {
+    try {
+      const { error } = await supabaseAdmin.from('services').insert({
+        title: newService.title,
+        description: newService.description,
+        icon: newService.icon,
+        sort_order: newService.sort_order,
+        published: newService.published,
+      });
+      if (error) console.warn('Supabase service insert warning:', error.message);
+    } catch (err) {
+      console.warn('Supabase service insert exception:', err);
+    }
+  }
+
   res.status(201).json(newService);
 });
 
@@ -826,12 +910,43 @@ app.put('/api/admin/services/:id', requireAdmin, async (req: Request, res: Respo
     return;
   }
   memoryDb.services[index] = { ...memoryDb.services[index], ...req.body };
+
+  // Persist to Supabase when configured
+  if (supabaseAdmin) {
+    try {
+      const { error } = await supabaseAdmin
+        .from('services')
+        .update({
+          title: memoryDb.services[index].title,
+          description: memoryDb.services[index].description,
+          icon: memoryDb.services[index].icon,
+          sort_order: memoryDb.services[index].sort_order,
+          published: memoryDb.services[index].published,
+        })
+        .eq('id', id);
+      if (error) console.warn('Supabase service update warning:', error.message);
+    } catch (err) {
+      console.warn('Supabase service update exception:', err);
+    }
+  }
+
   res.json(memoryDb.services[index]);
 });
 
 app.delete('/api/admin/services/:id', requireAdmin, async (req: Request, res: Response) => {
   const { id } = req.params;
   memoryDb.services = memoryDb.services.filter((s) => s.id !== id);
+
+  // Persist to Supabase when configured
+  if (supabaseAdmin) {
+    try {
+      const { error } = await supabaseAdmin.from('services').delete().eq('id', id);
+      if (error) console.warn('Supabase service delete warning:', error.message);
+    } catch (err) {
+      console.warn('Supabase service delete exception:', err);
+    }
+  }
+
   res.json({ success: true });
 });
 
@@ -851,6 +966,24 @@ app.post('/api/admin/testimonials', requireAdmin, async (req: Request, res: Resp
     published: req.body.published !== false,
   };
   memoryDb.testimonials.push(newTestimonial);
+
+  // Persist to Supabase when configured
+  if (supabaseAdmin) {
+    try {
+      const { error } = await supabaseAdmin.from('testimonials').insert({
+        author_name: newTestimonial.author_name,
+        author_role: newTestimonial.author_role,
+        quote: newTestimonial.quote,
+        avatar_url: newTestimonial.avatar_url,
+        sort_order: newTestimonial.sort_order,
+        published: newTestimonial.published,
+      });
+      if (error) console.warn('Supabase testimonial insert warning:', error.message);
+    } catch (err) {
+      console.warn('Supabase testimonial insert exception:', err);
+    }
+  }
+
   res.status(201).json(newTestimonial);
 });
 
@@ -862,12 +995,44 @@ app.put('/api/admin/testimonials/:id', requireAdmin, async (req: Request, res: R
     return;
   }
   memoryDb.testimonials[index] = { ...memoryDb.testimonials[index], ...req.body };
+
+  // Persist to Supabase when configured
+  if (supabaseAdmin) {
+    try {
+      const { error } = await supabaseAdmin
+        .from('testimonials')
+        .update({
+          author_name: memoryDb.testimonials[index].author_name,
+          author_role: memoryDb.testimonials[index].author_role,
+          quote: memoryDb.testimonials[index].quote,
+          avatar_url: memoryDb.testimonials[index].avatar_url,
+          sort_order: memoryDb.testimonials[index].sort_order,
+          published: memoryDb.testimonials[index].published,
+        })
+        .eq('id', id);
+      if (error) console.warn('Supabase testimonial update warning:', error.message);
+    } catch (err) {
+      console.warn('Supabase testimonial update exception:', err);
+    }
+  }
+
   res.json(memoryDb.testimonials[index]);
 });
 
 app.delete('/api/admin/testimonials/:id', requireAdmin, async (req: Request, res: Response) => {
   const { id } = req.params;
   memoryDb.testimonials = memoryDb.testimonials.filter((t) => t.id !== id);
+
+  // Persist to Supabase when configured
+  if (supabaseAdmin) {
+    try {
+      const { error } = await supabaseAdmin.from('testimonials').delete().eq('id', id);
+      if (error) console.warn('Supabase testimonial delete warning:', error.message);
+    } catch (err) {
+      console.warn('Supabase testimonial delete exception:', err);
+    }
+  }
+
   res.json({ success: true });
 });
 
@@ -885,6 +1050,22 @@ app.post('/api/admin/faqs', requireAdmin, async (req: Request, res: Response) =>
     published: req.body.published !== false,
   };
   memoryDb.faqs.push(newFaq);
+
+  // Persist to Supabase when configured
+  if (supabaseAdmin) {
+    try {
+      const { error } = await supabaseAdmin.from('faqs').insert({
+        question: newFaq.question,
+        answer: newFaq.answer,
+        sort_order: newFaq.sort_order,
+        published: newFaq.published,
+      });
+      if (error) console.warn('Supabase faq insert warning:', error.message);
+    } catch (err) {
+      console.warn('Supabase faq insert exception:', err);
+    }
+  }
+
   res.status(201).json(newFaq);
 });
 
@@ -896,12 +1077,42 @@ app.put('/api/admin/faqs/:id', requireAdmin, async (req: Request, res: Response)
     return;
   }
   memoryDb.faqs[index] = { ...memoryDb.faqs[index], ...req.body };
+
+  // Persist to Supabase when configured
+  if (supabaseAdmin) {
+    try {
+      const { error } = await supabaseAdmin
+        .from('faqs')
+        .update({
+          question: memoryDb.faqs[index].question,
+          answer: memoryDb.faqs[index].answer,
+          sort_order: memoryDb.faqs[index].sort_order,
+          published: memoryDb.faqs[index].published,
+        })
+        .eq('id', id);
+      if (error) console.warn('Supabase faq update warning:', error.message);
+    } catch (err) {
+      console.warn('Supabase faq update exception:', err);
+    }
+  }
+
   res.json(memoryDb.faqs[index]);
 });
 
 app.delete('/api/admin/faqs/:id', requireAdmin, async (req: Request, res: Response) => {
   const { id } = req.params;
   memoryDb.faqs = memoryDb.faqs.filter((f) => f.id !== id);
+
+  // Persist to Supabase when configured
+  if (supabaseAdmin) {
+    try {
+      const { error } = await supabaseAdmin.from('faqs').delete().eq('id', id);
+      if (error) console.warn('Supabase faq delete warning:', error.message);
+    } catch (err) {
+      console.warn('Supabase faq delete exception:', err);
+    }
+  }
+
   res.json({ success: true });
 });
 
