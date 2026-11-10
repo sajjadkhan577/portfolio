@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Search, ExternalLink, Github, Eye, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ExternalLink, Github, Search } from 'lucide-react';
 import { Project } from '../../data/initialData';
-import { Section } from '../ui/FormElements';
-import { Card, Badge, Button } from '../ui/Button';
+import { getProjectPreviewAlt, getProjectPreviewNote, getProjectPreviewSrc, getProjectSortOrder, hasProjectPreview, isPublicUrl } from '../../data/projectPresentation';
+import { DesktopProjectFeature } from './DesktopProjectFeature';
 
 interface WorkPageProps {
   projects: Project[];
@@ -10,188 +10,151 @@ interface WorkPageProps {
   onNavigate: (path: string) => void;
 }
 
-export const WorkPage: React.FC<WorkPageProps> = ({
-  projects,
-  onSelectProject,
-  onNavigate,
-}) => {
-  const [filterTech, setFilterTech] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState<string>('');
-
-  const allTechs = Array.from(new Set(projects.flatMap((p) => p.tech)));
-
-  const filteredProjects = projects.filter((p) => {
-    const matchesTech = filterTech === 'all' || p.tech.includes(filterTech);
-    const matchesSearch =
-      p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.tech.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesTech && matchesSearch;
+export const WorkPage: React.FC<WorkPageProps> = ({ projects, onSelectProject, onNavigate }) => {
+  const [filterTech, setFilterTech] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const publishedProjects = projects
+    .filter((project) => project.published && hasProjectPreview(project))
+    .sort((a, b) => getProjectSortOrder(a) - getProjectSortOrder(b));
+  const allTechs = Array.from(new Set(publishedProjects.flatMap((project) => project.tech)));
+  const query = searchQuery.trim().toLowerCase();
+  const filteredProjects = publishedProjects.filter((project) => {
+    const matchesTech = filterTech === 'all' || project.tech.includes(filterTech);
+    const matchesQuery = !query ||
+      project.title.toLowerCase().includes(query) ||
+      project.summary.toLowerCase().includes(query) ||
+      project.tech.some((tech) => tech.toLowerCase().includes(query));
+    return matchesTech && matchesQuery;
   });
 
   return (
-    <div className="min-h-screen py-12 sm:py-16">
-      <Section
-        id="all-work"
-        eyebrow="Architecture & Case Studies"
-        title="All Projects & Platform Systems"
-        subtitle="Explore full-stack platforms, client LMS deployments, offline PWAs, and e-commerce applications built for speed and reliability."
-      >
-        {/* Navigation & Filter Bar */}
-        <div className="mb-10 space-y-4">
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onNavigate('/')}
-              leftIcon={<ArrowLeft className="w-4 h-4" />}
-            >
-              Back to Home
-            </Button>
-
-            {/* Search Input */}
-            <div className="relative w-full sm:w-72">
-              <Search className="w-4 h-4 text-[var(--text-muted)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-              <input
-                type="text"
-                placeholder="Search projects or stack..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 bg-[var(--bg-surface)] text-sm text-[var(--text-primary)] border border-[var(--border-color)] rounded-xl focus:outline-none focus:border-[var(--accent-color)]"
-              />
-            </div>
-          </div>
-
-          {/* Tech Pills */}
-          <div className="flex items-center gap-1.5 flex-wrap pt-2">
-            <button
-              onClick={() => setFilterTech('all')}
-              className={`px-3 py-1 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
-                filterTech === 'all'
-                  ? 'bg-[var(--accent-color)] text-[var(--bg-primary)] font-bold'
-                  : 'bg-[var(--bg-surface)] text-[var(--text-muted)] hover:text-[var(--text-primary)] border border-[var(--border-color)]'
-              }`}
-            >
-              All Stacks ({projects.length})
-            </button>
-            {allTechs.map((tech) => (
-              <button
-                key={tech}
-                onClick={() => setFilterTech(tech)}
-                className={`px-3 py-1 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
-                  filterTech === tech
-                    ? 'bg-[var(--accent-color)] text-[var(--bg-primary)] font-bold'
-                    : 'bg-[var(--bg-surface)] text-[var(--text-muted)] hover:text-[var(--text-primary)] border border-[var(--border-color)]'
-                }`}
-              >
-                {tech}
-              </button>
-            ))}
-          </div>
+    <div className="editorial-section">
+      <div className="editorial-container">
+        <div className="section-heading">
+          <p className="section-kicker">Selected work</p>
+          <h1 className="section-title">Projects, in context.</h1>
+          <p className="section-description">
+            A selection of digital products, the needs behind them, and the technology used.
+          </p>
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map((project) => (
-            <Card
-              key={project.id || project.slug}
-              hoverEffect
-              className="flex flex-col justify-between border-[var(--border-color)] bg-[var(--bg-surface)]/90 p-5 group"
+        <div className="work-toolbar">
+          <button type="button" className="work-back" onClick={() => onNavigate('/')}>
+            <ArrowLeft size={14} aria-hidden="true" /> Back to the portfolio
+          </button>
+          <label className="work-search">
+            <Search size={15} aria-hidden="true" />
+            <span className="sr-only">Search projects</span>
+            <input
+              type="search"
+              placeholder="Search projects or technologies"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+            />
+          </label>
+        </div>
+
+        <div className="work-filters" aria-label="Filter projects by technology">
+          <button
+            type="button"
+            className={filterTech === 'all' ? 'work-filter is-active' : 'work-filter'}
+            onClick={() => setFilterTech('all')}
+          >
+            All projects <span>{publishedProjects.length}</span>
+          </button>
+          {allTechs.map((tech) => (
+            <button
+              type="button"
+              key={tech}
+              className={filterTech === tech ? 'work-filter is-active' : 'work-filter'}
+              aria-pressed={filterTech === tech}
+              onClick={() => setFilterTech(tech)}
             >
-              <div className="space-y-4">
-                {/* Cover Image */}
-                <div
-                  className="relative aspect-video rounded-xl overflow-hidden bg-[var(--bg-primary)] border border-[var(--border-color)] cursor-pointer"
-                  onClick={() => onSelectProject(project)}
-                >
-                  {project.cover_image_url ? (
-                    <img
-                      src={project.cover_image_url}
-                      alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-xs font-mono text-[var(--text-muted)]">
-                      [Platform Preview]
-                    </div>
-                  )}
-                  <div className="absolute top-2 right-2">
-                    <Badge variant={project.featured ? 'accent' : 'neutral'}>
-                      {project.featured ? 'Featured' : 'Production'}
-                    </Badge>
-                  </div>
-                </div>
-
-                {/* Details */}
-                <div>
-                  <h3
-                    onClick={() => onSelectProject(project)}
-                    className="text-lg font-bold text-[var(--text-primary)] hover:text-[var(--accent-color)] transition-colors cursor-pointer line-clamp-1"
-                  >
-                    {project.title}
-                  </h3>
-                  <p className="mt-1.5 text-xs text-[var(--text-muted)] line-clamp-2 leading-relaxed">
-                    {project.summary}
-                  </p>
-                </div>
-
-                {/* Tech Pills */}
-                <div className="flex flex-wrap gap-1">
-                  {project.tech.slice(0, 4).map((t) => (
-                    <span
-                      key={t}
-                      className="px-2 py-0.5 rounded bg-[var(--bg-surface-elevated)] text-[11px] font-mono text-[var(--text-muted)] border border-[var(--border-glow)]"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                  {project.tech.length > 4 && (
-                    <span className="px-2 py-0.5 rounded bg-[var(--bg-surface-elevated)] text-[11px] font-mono text-[var(--text-muted)]">
-                      +{project.tech.length - 4}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* Action Links */}
-              <div className="pt-4 mt-4 border-t border-[var(--border-color)] flex items-center justify-between">
-                <button
-                  onClick={() => onSelectProject(project)}
-                  className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--accent-color)] hover:underline cursor-pointer"
-                >
-                  <Eye className="w-3.5 h-3.5" />
-                  <span>Case Study</span>
-                </button>
-
-                <div className="flex items-center gap-2">
-                  {project.live_url && (
-                    <a
-                      href={project.live_url.includes('[') ? undefined : project.live_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--accent-color)] hover:bg-[var(--bg-surface-elevated)]"
-                      title="Live link"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                  )}
-                  {project.repo_url && (
-                    <a
-                      href={project.repo_url.includes('[') ? undefined : project.repo_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--accent-color)] hover:bg-[var(--bg-surface-elevated)]"
-                      title="GitHub code"
-                    >
-                      <Github className="w-4 h-4" />
-                    </a>
-                  )}
-                </div>
-              </div>
-            </Card>
+              {tech}
+            </button>
           ))}
         </div>
-      </Section>
+
+        {filteredProjects.length > 0 ? (
+          <div className="project-list">
+            {filteredProjects.map((project, index) => {
+              const previewSrc = getProjectPreviewSrc(project);
+              if (project.slug === 'petrol-pump-management-system') {
+                return (
+                  <DesktopProjectFeature
+                    key={project.id || project.slug}
+                    project={project}
+                    number={index + 1}
+                    onSelectProject={onSelectProject}
+                  />
+                );
+              }
+              return (
+                <article className="project-row" key={project.id || project.slug}>
+                  <button
+                    type="button"
+                    className="project-preview"
+                    onClick={() => onSelectProject(project)}
+                    aria-label={`Open ${project.title} case study`}
+                  >
+                    {previewSrc ? (
+                      <>
+                        <img src={previewSrc} alt={getProjectPreviewAlt(project)} loading="lazy" decoding="async" />
+                        {getProjectPreviewNote(project) && (
+                          <span className="project-preview-note">{getProjectPreviewNote(project)}</span>
+                        )}
+                      </>
+                    ) : (
+                      <span className="project-preview-empty">
+                        <span><ArrowRight size={24} aria-hidden="true" /><span>Project preview not provided</span></span>
+                      </span>
+                    )}
+                  </button>
+                  <div className="project-copy">
+                    <span className="project-number">PROJECT / {String(index + 1).padStart(2, '0')}</span>
+                    <h2 className="project-title">{project.title}</h2>
+                    <p className="project-summary">{project.summary}</p>
+                    {project.problem && (
+                      <div className="project-detail">
+                        <p className="project-detail-label">The challenge</p>
+                        <p>{project.problem}</p>
+                      </div>
+                    )}
+                    {project.solution && (
+                      <div className="project-detail">
+                        <p className="project-detail-label">My contribution</p>
+                        <p>{project.solution}</p>
+                      </div>
+                    )}
+                    {project.tech.length > 0 && (
+                      <div className="project-tech" aria-label="Technologies used">
+                        {project.tech.map((tech) => <span key={tech}>{tech}</span>)}
+                      </div>
+                    )}
+                    <div className="project-actions">
+                      <button type="button" onClick={() => onSelectProject(project)}>
+                        Read the case study <ArrowRight size={14} aria-hidden="true" />
+                      </button>
+                      {isPublicUrl(project.live_url) && (
+                        <a href={project.live_url} target="_blank" rel="noopener noreferrer">
+                          Live site <ExternalLink size={13} aria-hidden="true" />
+                        </a>
+                      )}
+                      {isPublicUrl(project.repo_url) && (
+                        <a href={project.repo_url} target="_blank" rel="noopener noreferrer">
+                          Source code <Github size={13} aria-hidden="true" />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <p className="work-empty">No projects match that search. Try another term or technology.</p>
+        )}
+      </div>
     </div>
   );
 };

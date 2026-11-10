@@ -1,38 +1,43 @@
-import React, { useState } from 'react';
-import {
-  Calendar,
-  Mail,
-  Send,
-  CheckCircle,
-  AlertCircle,
-  ExternalLink,
-  MessageSquare,
-  Linkedin,
-  Github,
-  DollarSign,
-} from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { ArrowUpRight, Github, Linkedin, Mail, MessageCircle, Send } from 'lucide-react';
 import { SiteSettings } from '../../data/initialData';
-import { Section, Input, Textarea, Select } from '../ui/FormElements';
-import { Card, Button } from '../ui/Button';
 
 interface ContactSectionProps {
   settings: SiteSettings;
   preselectedService?: string;
+  standalone?: boolean;
 }
 
-export const ContactSection: React.FC<ContactSectionProps> = ({
-  settings,
-  preselectedService,
-}) => {
-  const [formData, setFormData] = useState({
+interface ContactFormData {
+  name: string;
+  email: string;
+  project_type: string;
+  budget: string;
+  message: string;
+  website: string;
+}
+
+const projectOptions = [
+  'Website Development',
+  'Full-Stack Web Applications',
+  'Responsive Website Design',
+  'Business Websites',
+  'API Integration',
+  'Website Maintenance and Optimization',
+  'Other Custom Development',
+];
+
+const budgetOptions = ['Not sure yet', 'Under $1,000', '$1,000 - $3,000', '$3,000 - $5,000', '$5,000+'];
+
+export const ContactSection: React.FC<ContactSectionProps> = ({ settings, preselectedService, standalone = false }) => {
+  const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
-    project_type: preselectedService || 'Coach & Consultant Websites',
-    budget: '$3,000 - $5,000',
+    project_type: preselectedService || '',
+    budget: '',
     message: '',
-    website: '', // Honeypot field
+    website: '',
   });
-
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{
@@ -40,334 +45,225 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
     message: string;
   }>({ type: null, message: '' });
 
-  const projectOptions = [
-    { value: 'Coach & Consultant Websites', label: 'Coach & Consultant Website (Booking & Funnels)' },
-    { value: 'Online Course Platforms (LMS)', label: 'Online Course Platform (LMS & Payment Verification)' },
-    { value: 'Client Portals & Admin Dashboards', label: 'Client Portal or Admin Dashboard' },
-    { value: 'E-Commerce and Business Websites', label: 'E-Commerce / Business Web App' },
-    { value: 'Bug Fixes, Upgrades & Maintenance', label: 'Bug Fixes, Performance Boost or Upgrades' },
-    { value: 'Other Custom Development', label: 'Other Custom Full-Stack Project' },
-  ];
+  useEffect(() => {
+    if (preselectedService) {
+      setFormData((previous) => ({ ...previous, project_type: preselectedService }));
+    }
+  }, [preselectedService]);
 
-  const budgetOptions = [
-    { value: '< $1,000', label: 'Under $1,000 (Small sprint / bug fix)' },
-    { value: '$1,000 - $3,000', label: '$1,000 - $3,000 (Standard website / funnel)' },
-    { value: '$3,000 - $5,000', label: '$3,000 - $5,000 (Full platform / custom LMS)' },
-    { value: '$5,000+', label: '$5,000+ (Comprehensive enterprise system)' },
-  ];
+  const updateField = (field: keyof ContactFormData, value: string) => {
+    setFormData((previous) => ({ ...previous, [field]: value }));
+    setFormErrors((previous) => ({ ...previous, [field]: '' }));
+  };
 
   const validate = () => {
     const errors: Record<string, string> = {};
-    if (!formData.name.trim() || formData.name.trim().length < 2) {
-      errors.name = 'Please provide your full name (at least 2 characters).';
+    if (formData.name.trim().length < 2) errors.name = 'Please enter your name.';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      errors.email = 'Please enter a valid email address.';
     }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!formData.email.trim() || !emailRegex.test(formData.email.trim())) {
-      errors.email = 'Please provide a valid business or personal email.';
-    }
-    if (!formData.message.trim() || formData.message.trim().length < 15) {
-      errors.message = 'Please provide a few details about your project (at least 15 characters).';
+    if (!formData.project_type) errors.project_type = 'Choose a project type, or select “Other”.';
+    if (formData.message.trim().length < 15) {
+      errors.message = 'Please share a little more detail (at least 15 characters).';
     }
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setSubmitStatus({ type: null, message: '' });
-
     if (!validate()) return;
 
     setIsSubmitting(true);
-
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
+      const contentType = response.headers.get('content-type') || '';
+      const data = contentType.includes('application/json') ? await response.json() : null;
 
-      const data = await response.json();
-
-      if (response.ok && data.success) {
+      if (response.ok && data?.success) {
         setSubmitStatus({
           type: 'success',
-          message: data.message || 'Thank you! Your message has been sent directly to Sajjad.',
+          message: data.message || 'Thanks for reaching out. Your message has been sent.',
         });
-        setFormData({
-          name: '',
-          email: '',
-          project_type: 'Coach & Consultant Websites',
-          budget: '$3,000 - $5,000',
-          message: '',
-          website: '',
-        });
+        setFormData({ name: '', email: '', project_type: '', budget: '', message: '', website: '' });
         setFormErrors({});
       } else {
         setSubmitStatus({
           type: 'error',
-          message: data.error || 'Could not send message. Please email directly at sajjad2003khan@gmail.com.',
+          message: data?.error || `Your message could not be sent (error ${response.status}). Please email me directly.`,
         });
       }
     } catch {
       setSubmitStatus({
         type: 'error',
-        message: 'Network error. Please email directly at sajjad2003khan@gmail.com.',
+        message: 'A network error prevented your message from being sent. Please email me directly.',
       });
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const whatsappUrl = settings.whatsapp
+    ? `https://wa.me/${settings.whatsapp.replace(/[^0-9]/g, '')}`
+    : '';
+  const Heading = standalone ? 'h1' : 'h2';
+
   return (
-    <Section
-      id="contact"
-      eyebrow="Initiate Project"
-      title="Let's Build Your Platform"
-      subtitle="Have an online course platform, booking funnel, or custom dashboard to build? Book a call directly or send an inquiry below."
-    >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column: Direct Booking & Fast Channels */}
-        <div className="lg:col-span-5 space-y-6">
-          {/* Calendar Booking Card */}
-          <Card className="border-[var(--border-color)] bg-gradient-to-br from-[var(--bg-surface)] to-[var(--bg-primary)] p-6 space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/30 flex items-center justify-center text-[var(--accent-color)]">
-              <Calendar className="w-6 h-6" />
-            </div>
-            <div>
-              <h3 className="text-xl font-bold text-[var(--text-primary)]">
-                Schedule a Free Strategy Call
-              </h3>
-              <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1.5 leading-relaxed">
-                20-minute video discussion to explore your architecture requirements, timeline milestones, and exact budget estimate.
-              </p>
-            </div>
-
-            <div className="pt-2">
-              <a
-                href={
-                  settings.booking_url && !settings.booking_url.includes('[')
-                    ? settings.booking_url
-                    : `mailto:${settings.contact_email}?subject=Strategy%20Call%20Booking`
-                }
-                target={settings.booking_url && !settings.booking_url.includes('[') ? '_blank' : undefined}
-                rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[var(--accent-color)] hover:bg-[var(--accent-hover)] text-[var(--bg-primary)] font-semibold text-sm transition-all shadow-md shadow-[var(--accent-color)]/20"
-              >
-                <Calendar className="w-4 h-4" />
-                <span>
-                  {settings.booking_url && !settings.booking_url.includes('[')
-                    ? 'Open Booking Calendar'
-                    : 'Request Call via Email'}
-                </span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-            </div>
-          </Card>
-
-          {/* Direct Channels List */}
-          <Card className="border-[var(--border-color)] bg-[var(--bg-surface)] p-6 space-y-4">
-            <h4 className="text-xs font-mono font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-              Direct Contact Channels
-            </h4>
-
-            <div className="space-y-3 text-sm">
-              <a
-                href={`mailto:${settings.contact_email}`}
-                className="flex items-center justify-between p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] hover:border-[var(--accent-color)]/40 group transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <Mail className="w-4 h-4 text-[var(--accent-color)]" />
-                  <div>
-                    <span className="text-xs text-[var(--text-muted)] block">Direct Email</span>
-                    <span className="text-xs sm:text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--accent-color)] transition-colors">
-                      {settings.contact_email}
-                    </span>
-                  </div>
-                </div>
-                <ExternalLink className="w-3.5 h-3.5 text-[var(--text-muted)]" />
-              </a>
-
-              {settings.whatsapp && (
-                <a
-                  href={`https://wa.me/${settings.whatsapp.replace(/[^0-9]/g, '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] hover:border-[var(--accent-color)]/40 group transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <MessageSquare className="w-4 h-4 text-[var(--accent-color)]" />
-                    <div>
-                      <span className="text-xs text-[var(--text-muted)] block">WhatsApp</span>
-                      <span className="text-xs sm:text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--accent-color)] transition-colors">
-                        {settings.whatsapp}
-                      </span>
-                    </div>
-                  </div>
-                  <ExternalLink className="w-3.5 h-3.5 text-[var(--text-muted)]" />
-                </a>
-              )}
-
-              {settings.linkedin_url && (
-                <a
-                  href={settings.linkedin_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] hover:border-[var(--accent-color)]/40 group transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <Linkedin className="w-4 h-4 text-[var(--accent-color)]" />
-                    <div>
-                      <span className="text-xs text-[var(--text-muted)] block">LinkedIn</span>
-                      <span className="text-xs sm:text-sm text-[var(--text-primary)] group-hover:text-[var(--accent-color)] transition-colors">
-                        sajjad-khan-dev
-                      </span>
-                    </div>
-                  </div>
-                  <ExternalLink className="w-3.5 h-3.5 text-[var(--text-muted)]" />
-                </a>
-              )}
-
-              {settings.github_url && (
-                <a
-                  href={settings.github_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] hover:border-[var(--accent-color)]/40 group transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <Github className="w-4 h-4 text-[var(--accent-color)]" />
-                    <div>
-                      <span className="text-xs text-[var(--text-muted)] block">GitHub Repos</span>
-                      <span className="text-xs sm:text-sm text-[var(--text-primary)] group-hover:text-[var(--accent-color)] transition-colors">
-                        sajjadkhan577
-                      </span>
-                    </div>
-                  </div>
-                  <ExternalLink className="w-3.5 h-3.5 text-[var(--text-muted)]" />
-                </a>
-              )}
-            </div>
-          </Card>
+    <section id="contact" className="editorial-contact">
+      <div className="editorial-container">
+        <div className="section-heading">
+          <p className="section-kicker">Have something in mind?</p>
+          <Heading className="section-title">Let’s make your next idea useful.</Heading>
+          <p className="section-description">
+            Share a little about what you’re working on. I’ll get back to you to talk through
+            the goals, constraints, and a sensible next step.
+          </p>
         </div>
 
-        {/* Right Column: Validated Project Inquiry Form */}
-        <div className="lg:col-span-7">
-          <Card className="border-[var(--border-color)] bg-[var(--bg-surface)] p-6 sm:p-8">
-            <h3 className="text-xl font-bold text-[var(--text-primary)] mb-2">
-              Send a Detailed Project Inquiry
-            </h3>
-            <p className="text-xs sm:text-sm text-[var(--text-muted)] mb-6">
-              Fill out this form and I will reply within 24 hours with architectural suggestions and a preliminary scope.
-            </p>
-
-            {submitStatus.type === 'success' && (
-              <div className="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-                <p className="text-xs sm:text-sm text-emerald-300">
-                  {submitStatus.message}
-                </p>
-              </div>
+        <div className="editorial-contact-grid">
+          <aside className="contact-direct" aria-label="Other ways to get in touch">
+            <p>Prefer a direct conversation? Choose whichever channel works for you.</p>
+            <a href={`mailto:${settings.contact_email}`}>
+              <Mail size={15} aria-hidden="true" /> {settings.contact_email}
+            </a>
+            {whatsappUrl && (
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                <MessageCircle size={15} aria-hidden="true" /> WhatsApp
+              </a>
             )}
-
-            {submitStatus.type === 'error' && (
-              <div className="mb-6 p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
-                <p className="text-xs sm:text-sm text-rose-300">
-                  {submitStatus.message}
-                </p>
-              </div>
+            {settings.linkedin_url && (
+              <a href={settings.linkedin_url} target="_blank" rel="noopener noreferrer">
+                <Linkedin size={15} aria-hidden="true" /> LinkedIn
+              </a>
             )}
+            {settings.github_url && (
+              <a href={settings.github_url} target="_blank" rel="noopener noreferrer">
+                <Github size={15} aria-hidden="true" /> GitHub
+              </a>
+            )}
+            {settings.booking_url && !settings.booking_url.includes('[') && (
+              <a href={settings.booking_url} target="_blank" rel="noopener noreferrer">
+                <ArrowUpRight size={15} aria-hidden="true" /> Schedule a conversation
+              </a>
+            )}
+          </aside>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Honeypot field (hidden from legitimate users, traps automated bots) */}
-              <div className="hidden" aria-hidden="true">
-                <label htmlFor="website">Website (Leave Empty)</label>
+          <form className="contact-form" onSubmit={handleSubmit} noValidate>
+            <h3 className="contact-form-heading">Tell me about your project</h3>
+            {submitStatus.type && (
+              <p
+                className={`contact-feedback contact-feedback-${submitStatus.type}`}
+                role={submitStatus.type === 'error' ? 'alert' : 'status'}
+                aria-live="polite"
+              >
+                {submitStatus.message}
+              </p>
+            )}
+            <div className="contact-fields">
+              <div className="contact-field">
+                <label htmlFor="contact-name">Your name</label>
                 <input
-                  type="text"
-                  id="website"
+                  id="contact-name"
+                  name="name"
+                  autoComplete="name"
+                  value={formData.name}
+                  onChange={(event) => updateField('name', event.target.value)}
+                  aria-invalid={Boolean(formErrors.name)}
+                  aria-describedby={formErrors.name ? 'contact-name-error' : undefined}
+                  required
+                />
+                {formErrors.name && <span className="contact-error" id="contact-name-error">{formErrors.name}</span>}
+              </div>
+              <div className="contact-field">
+                <label htmlFor="contact-email">Email address</label>
+                <input
+                  id="contact-email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  value={formData.email}
+                  onChange={(event) => updateField('email', event.target.value)}
+                  aria-invalid={Boolean(formErrors.email)}
+                  aria-describedby={formErrors.email ? 'contact-email-error' : undefined}
+                  required
+                />
+                {formErrors.email && <span className="contact-error" id="contact-email-error">{formErrors.email}</span>}
+              </div>
+              <div className="contact-field">
+                <label htmlFor="contact-type">What are you looking to build?</label>
+                <select
+                  id="contact-type"
+                  name="project_type"
+                  value={formData.project_type}
+                  onChange={(event) => updateField('project_type', event.target.value)}
+                  aria-invalid={Boolean(formErrors.project_type)}
+                  aria-describedby={formErrors.project_type ? 'contact-type-error' : undefined}
+                  required
+                >
+                  <option value="">Select a project type</option>
+                  {preselectedService && !projectOptions.includes(preselectedService) && (
+                    <option value={preselectedService}>{preselectedService}</option>
+                  )}
+                  {projectOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+                {formErrors.project_type && <span className="contact-error" id="contact-type-error">{formErrors.project_type}</span>}
+              </div>
+              <div className="contact-field">
+                <label htmlFor="contact-budget">Budget range (optional)</label>
+                <select
+                  id="contact-budget"
+                  name="budget"
+                  value={formData.budget}
+                  onChange={(event) => updateField('budget', event.target.value)}
+                >
+                  <option value="">Choose a range</option>
+                  {budgetOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </div>
+              <div className="contact-field contact-field-full">
+                <label htmlFor="contact-message">A few details</label>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  value={formData.message}
+                  onChange={(event) => updateField('message', event.target.value)}
+                  placeholder="What are you hoping to build or improve?"
+                  aria-invalid={Boolean(formErrors.message)}
+                  aria-describedby={formErrors.message ? 'contact-message-error' : undefined}
+                  required
+                />
+                {formErrors.message && <span className="contact-error" id="contact-message-error">{formErrors.message}</span>}
+              </div>
+              <div className="contact-field" aria-hidden="true" style={{ position: 'absolute', left: '-10000px' }}>
+                <label htmlFor="contact-website">Leave this field empty</label>
+                <input
+                  id="contact-website"
                   name="website"
                   tabIndex={-1}
                   autoComplete="off"
                   value={formData.website}
-                  onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                  onChange={(event) => updateField('website', event.target.value)}
                 />
               </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Input
-                  label="Your Name"
-                  placeholder="e.g. Sarah Jenkins"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  error={formErrors.name}
-                />
-                <Input
-                  label="Email Address"
-                  type="email"
-                  placeholder="e.g. sarah@coaching.com"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  error={formErrors.email}
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Select
-                  label="Project Category"
-                  options={projectOptions}
-                  value={formData.project_type}
-                  onChange={(e) => setFormData({ ...formData, project_type: e.target.value })}
-                />
-                <Select
-                  label="Estimated Budget"
-                  options={budgetOptions}
-                  value={formData.budget}
-                  onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                />
-              </div>
-
-              <Textarea
-                label="Project Details & Requirements"
-                rows={5}
-                placeholder="Tell me about what you are building: do you need student authentication, payment verification, a booking funnel, or custom dashboards? What is your desired launch timeframe?"
-                required
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                error={formErrors.message}
-                helperText="Minimum 15 characters. The more specific details you share, the faster I can provide a scope."
-              />
-
-              <div className="pt-2">
-                <Button
-                  type="submit"
-                  variant="primary"
-                  size="lg"
-                  className="w-full"
-                  isLoading={isSubmitting}
-                  leftIcon={<Send className="w-4 h-4 text-[var(--bg-primary)]" />}
-                >
-                  Send Project Inquiry
-                </Button>
-              </div>
-
-              <div className="pt-2 flex items-center justify-between text-[11px] font-mono text-[var(--text-muted)]">
-                <span>✓ IP Rate-Limited & Honeypot Protected</span>
-                <span>✓ Direct Inbox Delivery</span>
-              </div>
-
-              {/* Privacy Note */}
-              <div className="p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-left">
-                <p className="text-[11px] text-[var(--text-muted)] leading-relaxed">
-                  <strong className="text-[var(--text-primary)] font-semibold">🔒 Privacy Guarantee:</strong> Your contact information and project details are held in strict confidence. I never sell your data, send marketing spam, or share client project details without explicit written consent.
-                </p>
-              </div>
-            </form>
-          </Card>
+            </div>
+            <div className="contact-submit">
+              <button type="submit" className="editorial-button" disabled={isSubmitting}>
+                {isSubmitting ? 'Sending…' : 'Send your inquiry'}
+                <Send size={14} aria-hidden="true" />
+              </button>
+            </div>
+            <p className="contact-note">
+              Your details are used only to respond to this inquiry. Fields marked as required
+              must be completed before sending.
+            </p>
+          </form>
         </div>
       </div>
-    </Section>
+    </section>
   );
 };

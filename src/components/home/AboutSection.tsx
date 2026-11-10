@@ -1,119 +1,69 @@
 import React from 'react';
-import { MapPin, Globe, Zap, Cpu, Terminal, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Github, Linkedin, MapPin } from 'lucide-react';
 import { SiteSettings } from '../../data/initialData';
-import { Section } from '../ui/FormElements';
-import { Card, Button } from '../ui/Button';
 
 interface AboutSectionProps {
   settings: SiteSettings;
   onNavigate: (path: string) => void;
 }
 
-export const AboutSection: React.FC<AboutSectionProps> = ({ settings, onNavigate }) => {
-  return (
-    <Section
-      id="about"
-      eyebrow="Background & Work Ethics"
-      title="Engineering Clean Code & Fast Execution"
-      subtitle="Coaches and businesses hire me because I treat web development as an investment in business growth, not an expense."
-    >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-        {/* Photo & Location Profile Card */}
-        <div className="lg:col-span-5 space-y-6">
-          <Card className="border-[var(--border-color)] bg-[var(--bg-surface)] p-6 space-y-6">
-            <div className="relative aspect-square rounded-2xl overflow-hidden border border-[var(--border-glow)] bg-[var(--bg-primary)]">
-              <img
-                src="/assets/images/profile image.jpeg"
-                alt="Sajjad Khan - Full-Stack Web Developer"
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-              <div className="absolute bottom-3 left-3 right-3 bg-[var(--bg-primary)]/85 backdrop-blur-md px-3.5 py-2 rounded-xl border border-[var(--border-color)] flex items-center justify-between">
-                <div>
-                  <h4 className="text-sm font-bold text-[var(--text-primary)]">Sajjad Khan</h4>
-                  <p className="text-xs text-[var(--accent-color)] font-mono">Full-Stack Web Developer</p>
-                </div>
-                <div className="w-2.5 h-2.5 rounded-full bg-[var(--accent-color)] animate-pulse"></div>
-              </div>
-            </div>
+export const AboutSection: React.FC<AboutSectionProps> = ({ settings, onNavigate }) => (
+  <section id="about" className="editorial-section">
+    <div className="editorial-container about-grid">
+      <figure className="about-photo">
+        <img
+          src="/assets/images/profile%20image.jpeg"
+          alt="Sajjad Khan, full-stack web developer"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption className="about-photo-caption">
+          <span>Sajjad Khan</span>
+          <span><MapPin size={11} aria-hidden="true" /> Peshawar, PK</span>
+        </figcaption>
+      </figure>
 
-            {/* Remote Work Standard */}
-            <div className="space-y-3 text-xs font-mono text-[var(--text-muted)]">
-              <div className="flex items-center gap-2 p-2.5 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-color)]">
-                <MapPin className="w-4 h-4 text-[var(--accent-color)] shrink-0" />
-                <span>Base: Peshawar, Pakistan</span>
-              </div>
-              <div className="flex items-center gap-2 p-2.5 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-color)]">
-                <Globe className="w-4 h-4 text-[var(--accent-color)] shrink-0" />
-                <span>Working Remotely with Clients Worldwide (UTC+5)</span>
-              </div>
-              <div className="flex items-center gap-2 p-2.5 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-color)]">
-                <Zap className="w-4 h-4 text-[var(--accent-color)] shrink-0" />
-                <span>Sub-Second Response & Async Video Demos</span>
-              </div>
-            </div>
-          </Card>
+      <div className="about-copy">
+        <p className="section-kicker">A little about me</p>
+        <h2>I like making useful things work beautifully.</h2>
+        <p>
+          I’m Sajjad, a full-stack web developer who enjoys turning real-world needs into
+          thoughtful digital products. I work across the experience people see and the
+          systems that support it—from responsive interfaces to APIs and databases.
+        </p>
+        <p>
+          My approach is collaborative and practical: understand the problem first, keep
+          communication clear, and make deliberate choices that leave a product easier
+          to use and maintain.
+        </p>
+
+        <div className="about-principles">
+          <div>
+            <h3>Start with the people</h3>
+            <p>Useful software begins with a clear picture of who needs it and why.</p>
+          </div>
+          <div>
+            <h3>Care about the details</h3>
+            <p>Good structure, responsive layouts, and accessible interactions belong together.</p>
+          </div>
         </div>
 
-        {/* Narrative & Engineering Values */}
-        <div className="lg:col-span-7 space-y-6">
-          <div className="space-y-4 text-base text-[var(--text-muted)] leading-relaxed">
-            <p className="text-lg text-[var(--text-primary)] font-medium leading-relaxed">
-              I specialize in engineering full-stack platforms for clients who need dependable systems: coaches scaling their calendar, course creators needing custom gated portals with verified payments, and founders building robust web applications.
-            </p>
-            <p>
-              I work comfortably across both traditional, battle-tested server architectures (<strong className="text-[var(--text-primary)]">PHP + MySQL</strong>) and modern full-stack JavaScript ecosystems (<strong className="text-[var(--text-primary)]">React, Node.js, Express, MongoDB, Tailwind CSS</strong>).
-            </p>
-            <p>
-              When a client works with me, they get direct access to the engineer doing the work—no account managers, no inflated junior agency billing, and no code obfuscation.
-            </p>
-          </div>
-
-          {/* Core Principles Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-            <div className="p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)] space-y-1.5">
-              <div className="flex items-center gap-2 text-[var(--accent-color)]">
-                <Zap className="w-4 h-4" />
-                <h5 className="text-sm font-bold text-[var(--text-primary)]">Performance as a Feature</h5>
-              </div>
-              <p className="text-xs text-[var(--text-muted)]">
-                Every millisecond of page load counts toward your conversion. I build sites targeting 90+ Lighthouse mobile speed.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)] space-y-1.5">
-              <div className="flex items-center gap-2 text-[var(--accent-color)]">
-                <Cpu className="w-4 h-4" />
-                <h5 className="text-sm font-bold text-[var(--text-primary)]">Zero SaaS Lock-in</h5>
-              </div>
-              <p className="text-xs text-[var(--text-muted)]">
-                Why pay $300/month forever for cookie-cutter LMS platforms? You own your code, database, and customer relationships.
-              </p>
-            </div>
-          </div>
-
-          {/* Action CTA */}
-          <div className="pt-4 flex items-center gap-4">
-            <Button
-              variant="primary"
-              size="md"
-              onClick={() => onNavigate('/contact')}
-              rightIcon={<ArrowUpRight className="w-4 h-4 text-[var(--bg-primary)]" />}
-            >
-              Start a Conversation
-            </Button>
-            <a
-              href={settings.github_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-xs font-mono text-[var(--text-muted)] hover:text-[var(--accent-color)] transition-colors"
-            >
-              <Terminal className="w-4 h-4" />
-              <span>Review GitHub Repositories</span>
+        <div className="about-links">
+          <button type="button" className="editorial-button" onClick={() => onNavigate('/contact')}>
+            Get in touch <ArrowUpRight size={14} aria-hidden="true" />
+          </button>
+          {settings.github_url && (
+            <a href={settings.github_url} target="_blank" rel="noopener noreferrer">
+              <Github size={14} aria-hidden="true" /> GitHub
             </a>
-          </div>
+          )}
+          {settings.linkedin_url && (
+            <a href={settings.linkedin_url} target="_blank" rel="noopener noreferrer">
+              <Linkedin size={14} aria-hidden="true" /> LinkedIn
+            </a>
+          )}
         </div>
       </div>
-    </Section>
-  );
-};
+    </div>
+  </section>
+);

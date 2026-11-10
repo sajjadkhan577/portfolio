@@ -1,8 +1,8 @@
 import React from 'react';
-import { ExternalLink, Github, ArrowRight, Eye, ShieldAlert, Sparkles } from 'lucide-react';
+import { ArrowDownRight, ArrowRight, ExternalLink, Github } from 'lucide-react';
 import { Project } from '../../data/initialData';
-import { Section } from '../ui/FormElements';
-import { Card, Badge, Button } from '../ui/Button';
+import { getProjectPreviewAlt, getProjectPreviewNote, getProjectPreviewSrc, getProjectSortOrder, hasProjectPreview, isPublicUrl } from '../../data/projectPresentation';
+import { DesktopProjectFeature } from '../work/DesktopProjectFeature';
 
 interface FeaturedProjectsSectionProps {
   projects: Project[];
@@ -15,197 +15,109 @@ export const FeaturedProjectsSection: React.FC<FeaturedProjectsSectionProps> = (
   onSelectProject,
   onNavigate,
 }) => {
-  // Show featured projects on home (or first 4)
-  const displayProjects = projects.filter((p) => p.featured || p.sort_order <= 4);
+  const displayProjects = projects
+    .filter((project) => project.published && (project.slug === 'petrol-pump-management-system' || project.featured || project.sort_order <= 4) && hasProjectPreview(project))
+    .sort((a, b) => getProjectSortOrder(a) - getProjectSortOrder(b));
+  const desktopFeature = displayProjects.find((project) => project.slug === 'petrol-pump-management-system');
+  const standardProjects = displayProjects.filter((project) => project.slug !== 'petrol-pump-management-system');
 
   return (
-    <Section
-      id="projects"
-      eyebrow="Proven Client Work & Architecture"
-      title="Featured Platforms & Production Systems"
-      subtitle="Real-world applications engineered for real business constraints—handling authentication, payment receipts, offline workflows, and high transaction volumes."
-    >
-      <div className="space-y-12">
-        {displayProjects.map((project, index) => {
-          const isEven = index % 2 === 0;
+    <section id="projects" className="editorial-section">
+      <div className="editorial-container">
+        <div className="section-heading">
+          <p className="section-kicker">Selected work</p>
+          <h2 className="section-title">A few things I’ve been building.</h2>
+          <p className="section-description">
+            A closer look at the problems, decisions, and technology behind selected projects.
+          </p>
+        </div>
 
-          return (
-            <Card
-              key={project.id || project.slug}
-              hoverEffect
-              className="border-[var(--border-color)] bg-[var(--bg-surface)]/90 p-6 sm:p-8"
-            >
-              <div
-                className={`grid grid-cols-1 lg:grid-cols-12 gap-8 items-center ${
-                  isEven ? '' : 'lg:grid-flow-dense'
-                }`}
-              >
-                {/* Visual / Screenshot Column */}
-                <div
-                  className={`lg:col-span-6 relative overflow-hidden rounded-xl border border-[var(--border-color)] group cursor-pointer ${
-                    isEven ? '' : 'lg:col-start-7'
-                  }`}
+        <div className="project-list">
+          {desktopFeature && (
+            <DesktopProjectFeature project={desktopFeature} number={1} onSelectProject={onSelectProject} />
+          )}
+          {standardProjects.map((project, index) => {
+            const previewSrc = getProjectPreviewSrc(project);
+            const hasLiveSite = isPublicUrl(project.live_url);
+            const hasRepository = isPublicUrl(project.repo_url);
+            return (
+              <article className="project-row" key={project.id || project.slug}>
+                <button
+                  type="button"
+                  className="project-preview"
                   onClick={() => onSelectProject(project)}
+                  aria-label={`Open ${project.title} case study`}
                 >
-                  <div className="relative aspect-video w-full bg-[var(--bg-primary)] overflow-hidden">
-                    {project.cover_image_url ? (
+                  {previewSrc ? (
+                    <>
                       <img
-                        src={project.cover_image_url}
-                        alt={`${project.title} screenshot`}
-                        className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                        src={previewSrc}
+                        alt={getProjectPreviewAlt(project)}
                         loading="lazy"
+                        decoding="async"
                       />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-sm font-mono text-[var(--text-muted)] bg-gradient-to-br from-[var(--bg-surface)] to-[var(--bg-primary)]">
-                        <span>[Platform Interface Preview]</span>
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)] via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity"></div>
-                  </div>
-
-                  {/* Quick Action Overlay */}
-                  <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span className="px-3 py-1.5 rounded-lg bg-[var(--accent-color)] text-[var(--bg-primary)] text-xs font-semibold flex items-center gap-1 shadow-lg">
-                      <Eye className="w-3.5 h-3.5" />
-                      View Case Study
+                      {getProjectPreviewNote(project) && (
+                        <span className="project-preview-note">{getProjectPreviewNote(project)}</span>
+                      )}
+                    </>
+                  ) : (
+                    <span className="project-preview-empty">
+                      <span>
+                        <ArrowDownRight size={25} aria-hidden="true" />
+                        <span>Project preview not provided</span>
+                      </span>
                     </span>
-                  </div>
-                </div>
+                  )}
+                </button>
 
-                {/* Content Breakdown Column */}
-                <div
-                  className={`lg:col-span-6 space-y-4 ${
-                    isEven ? '' : 'lg:col-start-1'
-                  }`}
-                >
-                  {/* Category / Client Privacy Tag */}
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <Badge variant="accent">
-                      {project.tech[0] || 'Full-Stack'}
-                    </Badge>
-                    {project.show_client_name ? (
-                      <span className="text-xs font-mono text-[var(--text-muted)]">
-                        Client: <strong className="text-[var(--text-primary)]">{project.client_name}</strong>
-                      </span>
-                    ) : (
-                      <span className="text-xs font-mono text-[var(--text-muted)] flex items-center gap-1">
-                        <ShieldAlert className="w-3 h-3 text-[var(--warn-color)]" />
-                        Client Name Confidential
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Title & Summary */}
-                  <h3
-                    onClick={() => onSelectProject(project)}
-                    className="text-2xl font-bold text-[var(--text-primary)] hover:text-[var(--accent-color)] transition-colors cursor-pointer"
-                  >
-                    {project.title}
-                  </h3>
-                  <p className="text-sm text-[var(--text-muted)] leading-relaxed">
-                    {project.summary}
-                  </p>
-
-                  {/* Problem vs. What I Built Accordion */}
-                  <div className="space-y-2 text-xs bg-[var(--bg-primary)] p-4 rounded-xl border border-[var(--border-color)]">
-                    <div>
-                      <span className="text-[var(--text-muted)] font-mono font-semibold uppercase tracking-wider block mb-0.5">
-                        The Challenge:
-                      </span>
-                      <p className="text-[var(--text-muted)] line-clamp-2">{project.problem}</p>
+                <div className="project-copy">
+                  <span className="project-number">PROJECT / {String(index + (desktopFeature ? 2 : 1)).padStart(2, '0')}</span>
+                  <h3 className="project-title">{project.title}</h3>
+                  <p className="project-summary">{project.summary}</p>
+                  {project.problem && (
+                    <div className="project-detail">
+                      <p className="project-detail-label">The challenge</p>
+                      <p>{project.problem}</p>
                     </div>
-                    <div className="pt-2 border-t border-[var(--border-color)]">
-                      <span className="text-[var(--accent-color)] font-mono font-semibold uppercase tracking-wider block mb-0.5">
-                        What I Built:
-                      </span>
-                      <p className="text-[var(--text-primary)] line-clamp-2">{project.solution}</p>
+                  )}
+                  {project.solution && (
+                    <div className="project-detail">
+                      <p className="project-detail-label">My contribution</p>
+                      <p>{project.solution}</p>
                     </div>
-                    {project.result && (
-                      <div className="pt-2 border-t border-[var(--border-color)]">
-                        <span className="text-[var(--blue-accent)] font-mono font-semibold uppercase tracking-wider flex items-center gap-1 mb-0.5">
-                          <Sparkles className="w-3 h-3" />
-                          Measurable Outcome:
-                        </span>
-                        <p className="text-[var(--border-muted)]">{project.result}</p>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Tech Tags */}
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {project.tech.map((t) => (
-                      <span
-                        key={t}
-                        className="px-2.5 py-0.5 rounded-md bg-[var(--bg-surface-elevated)] text-xs font-mono text-[var(--text-muted)] border border-[var(--border-glow)]"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex items-center gap-3 pt-2">
-                    <Button
-                      variant="primary"
-                      size="sm"
-                      onClick={() => onSelectProject(project)}
-                      rightIcon={<ArrowRight className="w-3.5 h-3.5 text-[var(--bg-primary)]" />}
-                    >
-                      Case Study
-                    </Button>
-
-                    {project.live_url && (
-                      <a
-                        href={project.live_url.includes('[') ? undefined : project.live_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-medium transition-colors ${
-                          project.live_url.includes('[')
-                            ? 'border-[var(--border-glow)] text-[var(--text-muted)] cursor-not-allowed'
-                            : 'border-[var(--border-glow)] text-[var(--text-primary)] hover:border-[var(--accent-color)]/50 hover:text-[var(--accent-color)]'
-                        }`}
-                        title={project.live_url.includes('[') ? 'Live demo link placeholder' : 'Open live platform'}
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                        <span>Live Site</span>
+                  )}
+                  {project.tech.length > 0 && (
+                    <div className="project-tech" aria-label="Technologies used">
+                      {project.tech.map((tech) => <span key={tech}>{tech}</span>)}
+                    </div>
+                  )}
+                  <div className="project-actions">
+                    <button type="button" onClick={() => onSelectProject(project)}>
+                      Read the case study <ArrowRight size={14} aria-hidden="true" />
+                    </button>
+                    {hasLiveSite && (
+                      <a href={project.live_url} target="_blank" rel="noopener noreferrer">
+                        Live site <ExternalLink size={13} aria-hidden="true" />
                       </a>
                     )}
-
-                    {project.repo_url && (
-                      <a
-                        href={project.repo_url.includes('[') ? undefined : project.repo_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-medium transition-colors ${
-                          project.repo_url.includes('[')
-                            ? 'border-[var(--border-glow)] text-[var(--text-muted)] cursor-not-allowed'
-                            : 'border-[var(--border-glow)] text-[var(--text-primary)] hover:border-[var(--accent-color)]/50 hover:text-[var(--accent-color)]'
-                        }`}
-                        title={project.repo_url.includes('[') ? 'GitHub repository placeholder' : 'View source on GitHub'}
-                      >
-                        <Github className="w-3.5 h-3.5" />
-                        <span>Code</span>
+                    {hasRepository && (
+                      <a href={project.repo_url} target="_blank" rel="noopener noreferrer">
+                        Source code <Github size={13} aria-hidden="true" />
                       </a>
                     )}
                   </div>
                 </div>
-              </div>
-            </Card>
-          );
-        })}
-      </div>
+              </article>
+            );
+          })}
+        </div>
 
-      {/* View All Projects Link */}
-      <div className="mt-12 text-center">
-        <Button
-          variant="secondary"
-          size="lg"
-          onClick={() => onNavigate('/work')}
-          rightIcon={<ArrowRight className="w-4 h-4 text-[var(--accent-color)]" />}
-        >
-          View All Projects & Architecture Archive
-        </Button>
+        <div className="project-all-link">
+          <button type="button" className="editorial-button editorial-button-secondary" onClick={() => onNavigate('/work')}>
+            Explore all projects <ArrowRight size={15} aria-hidden="true" />
+          </button>
+        </div>
       </div>
-    </Section>
+    </section>
   );
 };

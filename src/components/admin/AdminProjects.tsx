@@ -24,6 +24,8 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
   const [editingProject, setEditingProject] = useState<Partial<Project> | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [techInput, setTechInput] = useState('');
+  const [imageError, setImageError] = useState('');
+  const [saveError, setSaveError] = useState('');
 
   const fetchProjects = async () => {
     try {
@@ -48,6 +50,8 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
   }, []);
 
   const handleOpenNew = () => {
+    setImageError('');
+    setSaveError('');
     setEditingProject({
       title: '',
       slug: '',
@@ -70,6 +74,8 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
   };
 
   const handleOpenEdit = (p: Project) => {
+    setImageError('');
+    setSaveError('');
     setEditingProject(p);
     setTechInput(p.tech.join(', '));
   };
@@ -87,65 +93,104 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
     setEditingProject({ ...editingProject, ...updates });
   };
 
-  // Client-side image compression using HTML5 Canvas (<500 KB)
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !editingProject) return;
 
+    setImageError('');
+    setSaveError('');
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+      setImageError('Choose a JPG, PNG, or WebP image.');
+      return;
+    }
+    if (file.size > 15 * 1024 * 1024) {
+      setImageError('Choose an image smaller than 15 MB.');
+      return;
+    }
+
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onerror = () => setImageError('The selected image could not be read. Please try another file.');
+    reader.onload = () => {
+      if (typeof reader.result !== 'string') {
+        setImageError('The selected image could not be read. Please try another file.');
+        return;
+      }
+
       const img = new Image();
       img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const MAX_WIDTH = 1200;
-        const MAX_HEIGHT = 800;
-        let width = img.width;
-        let height = img.height;
+        try {
+          const scale = Math.min(1, 1600 / img.width, 1000 / img.height);
+          const width = Math.max(1, Math.round(img.width * scale));
+          const height = Math.max(1, Math.round(img.height * scale));
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const context = canvas.getContext('2d');
+          if (!context) {
+            setImageError('Image compression is unavailable in this browser.');
+            return;
+          }
+          context.drawImage(img, 0, 0, width, height);
 
-        if (width > height) {
-          if (width > MAX_WIDTH) {
-            height *= MAX_WIDTH / width;
-            width = MAX_WIDTH;
+          const compressedImage = canvas.toDataURL('image/webp', 0.82);
+          if (compressedImage.length > 5 * 1024 * 1024) {
+            setImageError('The compressed image is still too large. Choose a smaller image.');
+            return;
           }
-        } else {
-          if (height > MAX_HEIGHT) {
-            width *= MAX_HEIGHT / height;
-            height = MAX_HEIGHT;
-          }
+          setEditingProject((current) => current ? { ...current, cover_image_url: compressedImage } : current);
+        } catch (error) {
+          console.error('Image compression error:', error);
+          setImageError('The image could not be prepared. Please try another file.');
         }
-
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        ctx?.drawImage(img, 0, 0, width, height);
-
-        // Compress to high-efficiency WebP / JPEG base64
-        const compressedBase64 = canvas.toDataURL('image/webp', 0.85);
-        setEditingProject({ ...editingProject, cover_image_url: compressedBase64 });
       };
-      img.src = event.target?.result as string;
+      img.onerror = () => setImageError('The selected file is not a readable image.');
+      img.src = reader.result;
     };
-    reader.readAsDataURL(file);
+    try {
+      reader.readAsDataURL(file);
+    } catch (error) {
+      console.error('Image read error:', error);
+      setImageError('The selected image could not be read. Please try another file.');
+    }
   };
 
   const handleSave = async () => {
     if (!editingProject || !editingProject.title || !editingProject.slug) {
-      alert('Please provide a title and slug');
+      setSaveError('Please provide a title and slug.');
       return;
     }
 
     setIsSaving(true);
-    const techArray = techInput
-      .split(',')
-      .map((t) => t.trim())
-      .filter(Boolean);
-
-    const payload = {
-      ...editingProject,
-      tech: techArray,
-    };
+    setSaveError('');
 
     try {
+      let coverImageUrl = editingProject.cover_image_url || '';
+      if (coverImageUrl.startsWith('data:')) {
+        const uploadResponse = await fetch('/api/admin/upload', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            dataUrl: coverImageUrl,
+            filename: `${editingProject.slug}-preview.webp`,
+            mimeType: 'image/webp',
+          }),
+        });
+        const uploadData: unknown = await uploadResponse.json().catch(() => null);
+        const uploadMessage = uploadData && typeof uploadData === 'object' && 'error' in uploadData && typeof uploadData.error === 'string'
+          ? uploadData.error
+          : 'Image upload failed. Please try again.';
+        if (!uploadResponse.ok) throw new Error(uploadMessage);
+        if (!uploadData || typeof uploadData !== 'object' || !('url' in uploadData) || typeof uploadData.url !== 'string') {
+          throw new Error('The image upload did not return a usable URL.');
+        }
+        coverImageUrl = uploadData.url;
+      }
+
+      const techArray = techInput.split(',').map((tech) => tech.trim()).filter(Boolean);
+      const payload = { ...editingProject, cover_image_url: coverImageUrl, tech: techArray };
       const isNew = !editingProject.id;
       const url = isNew ? '/api/admin/projects' : `/api/admin/projects/${editingProject.id}`;
       const method = isNew ? 'POST' : 'PUT';
@@ -163,11 +208,15 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
         await fetchProjects();
         setEditingProject(null);
       } else {
-        const errData = await res.json();
-        alert(errData.error || 'Failed to save project');
+        const errorData: unknown = await res.json().catch(() => null);
+        const message = errorData && typeof errorData === 'object' && 'error' in errorData && typeof errorData.error === 'string'
+          ? errorData.error
+          : 'Failed to save project.';
+        throw new Error(message);
       }
     } catch (err) {
       console.error('Save error:', err);
+      setSaveError(err instanceof Error ? err.message : 'Failed to save project.');
     } finally {
       setIsSaving(false);
     }
@@ -221,7 +270,7 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
                 {project.cover_image_url ? (
                   <img
                     src={project.cover_image_url}
-                    alt={project.title}
+                    alt={`${project.title} project preview`}
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -364,26 +413,39 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
                 placeholder="PHP, MySQL, React, Tailwind CSS"
               />
 
-              {/* Image Upload with Client-Side Canvas Compression */}
               <div className="space-y-2">
                 <label className="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-                  Cover Screenshot (Auto-compressed to WebP &lt;500KB)
+                  Project Preview Image
                 </label>
+                <p className="text-xs text-[var(--text-muted)]">
+                  Choose a project-specific image. It is resized to WebP and uploaded when you save.
+                </p>
                 <div className="flex items-center gap-3">
                   <label className="inline-flex items-center gap-2 px-3 py-2 bg-[var(--bg-surface-elevated)] hover:bg-[var(--bg-surface-dark)] text-xs font-medium text-[var(--text-primary)] rounded-xl border border-[var(--border-glow)] cursor-pointer">
                     <Upload className="w-4 h-4 text-[var(--accent-color)]" />
-                    <span>Upload New Image</span>
+                    <span>{editingProject.cover_image_url ? 'Replace Image' : 'Choose Image'}</span>
                     <input
                       type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
+                      accept="image/jpeg,image/png,image/webp"
+                      onChange={(event) => {
+                        handleImageUpload(event);
+                        event.currentTarget.value = '';
+                      }}
                       className="hidden"
                     />
                   </label>
                   {editingProject.cover_image_url && (
-                    <span className="text-xs text-[var(--accent-color)] font-mono">Image attached ✓</span>
+                    <span className="text-xs text-[var(--accent-color)] font-mono">Preview ready</span>
                   )}
                 </div>
+                {imageError && <p className="text-xs text-rose-400" role="alert">{imageError}</p>}
+                {editingProject.cover_image_url && (
+                  <img
+                    src={editingProject.cover_image_url}
+                    alt={`${editingProject.title || 'Project'} preview before saving`}
+                    className="w-full max-h-72 border border-[var(--border-color)] object-contain bg-[var(--bg-primary)]"
+                  />
+                )}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -454,6 +516,7 @@ export const AdminProjects: React.FC<AdminProjectsProps> = ({ token }) => {
               </div>
             </div>
 
+            {saveError && <p className="text-sm text-rose-400" role="alert">{saveError}</p>}
             <div className="pt-4 border-t border-[var(--border-color)] flex items-center justify-end gap-3">
               <Button variant="ghost" size="sm" onClick={() => setEditingProject(null)}>
                 Cancel

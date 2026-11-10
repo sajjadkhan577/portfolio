@@ -67,8 +67,8 @@ const defaultRecentLeads: MessageLead[] = [
     message: 'Looking for a clean high-converting booking site with client scheduling and Calendly integration.',
     status: 'new',
     created_at: new Date(Date.now() - 3600000 * 3).toISOString(),
+    updated_at: new Date(Date.now() - 3600000 * 3).toISOString(),
     ip_address: '127.0.0.1',
-    user_agent: 'Browser',
   },
   {
     id: 'lead-2',
@@ -79,8 +79,8 @@ const defaultRecentLeads: MessageLead[] = [
     message: 'Need a custom portal with Stripe billing integration and PostgreSQL database for SaaS client management.',
     status: 'contacted',
     created_at: new Date(Date.now() - 3600000 * 28).toISOString(),
+    updated_at: new Date(Date.now() - 3600000 * 28).toISOString(),
     ip_address: '127.0.0.1',
-    user_agent: 'Browser',
   },
 ];
 

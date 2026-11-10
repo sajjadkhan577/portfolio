@@ -278,11 +278,45 @@ app.get('/api/projects', async (_req, res) => {
       .eq('published', true)
       .order('sort_order', { ascending: true });
     if (!error && data) {
-      res.json(data);
+      const ppmsProject = initialProjects.find((project) => project.slug === 'petrol-pump-management-system');
+      const seedProjects = new Map(initialProjects.map((project) => [project.slug, project]));
+      let publicProjects = data.map((project) => {
+        const fallback = seedProjects.get(project.slug);
+        if (!fallback) return project;
+        return {
+          ...project,
+          cover_image_url: project.cover_image_url || fallback.cover_image_url,
+          gallery: Array.isArray(project.gallery) && project.gallery.length ? project.gallery : fallback.gallery,
+          tech: Array.isArray(project.tech) && project.tech.length ? project.tech : fallback.tech,
+        };
+      });
+      if (ppmsProject && !data.some((project) => project.slug === ppmsProject.slug)) {
+        const { data: existingProject, error: existingProjectError } = await supabaseAdmin
+          .from('projects')
+          .select('id, published')
+          .eq('slug', ppmsProject.slug)
+          .maybeSingle();
+
+        if (existingProjectError) {
+          console.warn('PPMS fallback lookup warning:', existingProjectError.message);
+        } else if (!existingProject) {
+          publicProjects = [...publicProjects, ppmsProject];
+        }
+      }
+
+      res.json(publicProjects.sort((a, b) => {
+        if (a.slug === 'petrol-pump-management-system') return -1;
+        if (b.slug === 'petrol-pump-management-system') return 1;
+        return a.sort_order - b.sort_order;
+      }));
       return;
     }
   }
-  res.json(memoryDb.projects.filter((p) => p.published).sort((a, b) => a.sort_order - b.sort_order));
+  res.json(memoryDb.projects.filter((p) => p.published).sort((a, b) => {
+    if (a.slug === 'petrol-pump-management-system') return -1;
+    if (b.slug === 'petrol-pump-management-system') return 1;
+    return a.sort_order - b.sort_order;
+  }));
 });
 
 // Public Single Project Case Study
@@ -1214,13 +1248,21 @@ app.post('/api/admin/upload', requireAdmin, async (req: Request, res: Response):
           upsert: true,
         });
 
-      if (!error && data) {
-        const { data: publicData } = supabaseAdmin.storage
-          .from('portfolio-assets')
-          .getPublicUrl(cleanName);
-        res.json({ url: publicData.publicUrl });
+      if (error || !data) {
+        console.error('Supabase image upload error:', error?.message || 'Storage returned no file.');
+        res.status(502).json({ error: 'Failed to upload the image to storage. Please try again.' });
         return;
       }
+
+      const { data: publicData } = supabaseAdmin.storage
+        .from('portfolio-assets')
+        .getPublicUrl(cleanName);
+      if (!publicData.publicUrl) {
+        res.status(502).json({ error: 'Image uploaded, but a public URL could not be created.' });
+        return;
+      }
+      res.json({ url: publicData.publicUrl });
+      return;
     }
 
     // Fallback: return dataUrl directly for zero-dependency instant previews

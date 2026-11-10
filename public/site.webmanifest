@@ -1,11 +1,11 @@
 {
   "name": "Sajjad Khan - Full-Stack Web Developer",
   "short_name": "Sajjad Khan",
-  "description": "High-performance websites and platforms for coaches, consultants, course creators and small businesses.",
+  "description": "Thoughtful, responsive websites and web applications built to help businesses connect with their customers.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a0e17",
-  "theme_color": "#00e599",
+  "background_color": "#f5f3ee",
+  "theme_color": "#315746",
   "icons": [
     {
       "src": "/favicon.svg",

@@ -6,12 +6,10 @@ import React, { useEffect, useState } from 'react';
 import {
   initialProjects,
   initialServices,
-  initialTestimonials,
   initialFaqs,
   initialSettings,
   Project,
   Service,
-  Testimonial,
   FAQ,
   SiteSettings,
 } from './data/initialData';
@@ -22,7 +20,6 @@ import { TrustStrip } from './components/home/TrustStrip';
 import { ServicesSection } from './components/home/ServicesSection';
 import { FeaturedProjectsSection } from './components/home/FeaturedProjectsSection';
 import { ProcessSection } from './components/home/ProcessSection';
-import { TestimonialsSection } from './components/home/TestimonialsSection';
 import { AboutSection } from './components/home/AboutSection';
 import { FAQSection } from './components/home/FAQSection';
 import { ContactSection } from './components/home/ContactSection';
@@ -38,13 +35,12 @@ export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(() => window.location.pathname || '/');
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     const saved = localStorage.getItem('site_theme');
-    return saved === 'light' ? 'light' : 'dark';
+    return saved === 'dark' ? 'dark' : 'light';
   });
 
   // Dynamic state loaded from backend API (with resilient instant fallback)
   const [projects, setProjects] = useState<Project[]>(initialProjects);
   const [services, setServices] = useState<Service[]>(initialServices);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>(initialTestimonials);
   const [faqs, setFaqs] = useState<FAQ[]>(initialFaqs);
   const [settings, setSettings] = useState<SiteSettings>(initialSettings);
 
@@ -232,33 +228,65 @@ export default function App() {
   useEffect(() => {
     const canonicalLink = document.getElementById('canonical-link') as HTMLLinkElement | null;
     const origin = window.location.origin;
+    let pageTitle: string;
+    let pageDescription: string;
+    let canonicalPath = '/';
+    const defaultTitle = 'Sajjad Khan — Full-Stack Web Developer';
+    const defaultDescription = 'Thoughtful, responsive websites and web applications built to help businesses connect with their customers.';
 
     if (selectedProject) {
-      document.title = `${selectedProject.title} — Architecture & Case Study | Sajjad Khan`;
-      if (canonicalLink) canonicalLink.href = `${origin}/work/${selectedProject.slug}`;
+      pageTitle = `${selectedProject.title} — Project | Sajjad Khan`;
+      pageDescription = selectedProject.summary;
+      canonicalPath = `/work/${selectedProject.slug}`;
     } else if (currentPath === '/work') {
-      document.title = 'Client Work & Engineering Case Studies | Sajjad Khan';
-      if (canonicalLink) canonicalLink.href = `${origin}/work`;
+      pageTitle = 'Selected Work — Sajjad Khan';
+      pageDescription = 'Explore selected web projects, the needs behind them, and the technology used.';
+      canonicalPath = '/work';
     } else if (currentPath === '/contact') {
-      document.title = 'Book a Strategy Call or Inquire | Sajjad Khan';
-      if (canonicalLink) canonicalLink.href = `${origin}/contact`;
+      pageTitle = 'Contact — Sajjad Khan';
+      pageDescription = 'Get in touch with Sajjad Khan to discuss a website or web application project.';
+      canonicalPath = '/contact';
     } else if (currentPath.startsWith('/admin')) {
-      document.title = 'Portfolio Control Center — Admin';
-      if (canonicalLink) canonicalLink.href = `${origin}/admin`;
+      pageTitle = 'Portfolio Admin — Sajjad Khan';
+      pageDescription = 'Portfolio administration.';
+      canonicalPath = '/admin';
+      document.querySelector('meta[name="robots"]')?.setAttribute('content', 'noindex, nofollow');
     } else {
-      document.title = settings.seo_title || 'Sajjad Khan - Full-Stack Web Developer | Websites & Platforms';
-      if (canonicalLink) canonicalLink.href = `${origin}/`;
+      pageTitle =
+        !settings.seo_title || settings.seo_title === 'Sajjad Khan - Full-Stack Web Developer'
+          ? defaultTitle
+          : settings.seo_title;
+      pageDescription =
+        !settings.seo_description ||
+        settings.seo_description === 'I build websites and platforms for coaches, consultants, course creators and small businesses.' ||
+        settings.seo_description === 'Custom web platforms and high-converting systems for coaches, consultants, course creators, and businesses.'
+          ? defaultDescription
+          : settings.seo_description;
     }
+
+    document.title = pageTitle;
+    if (!currentPath.startsWith('/admin')) {
+      document.querySelector('meta[name="robots"]')?.setAttribute(
+        'content',
+        'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
+      );
+    }
+    if (canonicalLink) canonicalLink.href = `${origin}${canonicalPath}`;
+    document.querySelector('meta[name="description"]')?.setAttribute('content', pageDescription);
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', pageTitle);
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', pageDescription);
+    document.querySelector('meta[property="og:url"]')?.setAttribute('content', `${origin}${canonicalPath}`);
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', pageTitle);
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', pageDescription);
   }, [currentPath, selectedProject, settings]);
 
   // Fetch dynamic content from API
   useEffect(() => {
     const loadContent = async () => {
       try {
-        const [projRes, servRes, testRes, faqRes, setRes] = await Promise.all([
+        const [projRes, servRes, faqRes, setRes] = await Promise.all([
           fetch('/api/projects').catch(() => null),
           fetch('/api/services').catch(() => null),
-          fetch('/api/testimonials').catch(() => null),
           fetch('/api/faqs').catch(() => null),
           fetch('/api/settings').catch(() => null),
         ]);
@@ -275,19 +303,6 @@ export default function App() {
 
         const servData = await safeJson(servRes);
         if (Array.isArray(servData) && servData.length > 0) setServices(servData);
-
-        const testData = await safeJson(testRes);
-        if (Array.isArray(testData) && testData.length > 0) {
-          const hasPlaceholders = testData.some(
-            (t) =>
-              t.quote?.includes('[paste') ||
-              t.quote?.includes('[client') ||
-              t.author_name?.includes('[name')
-          );
-          if (!hasPlaceholders) {
-            setTestimonials(testData);
-          }
-        }
 
         const faqData = await safeJson(faqRes);
         if (Array.isArray(faqData) && faqData.length > 0) setFaqs(faqData);
@@ -344,6 +359,7 @@ export default function App() {
         )
       ) : !isKnownRoute ? (
         <div className="min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)]">
+          <a className="skip-link" href="#main-content">Skip to content</a>
           <Navbar
             settings={settings}
             currentPath={currentPath}
@@ -351,13 +367,14 @@ export default function App() {
             theme={theme}
             onToggleTheme={toggleTheme}
           />
-          <main className="flex-1">
+          <main className="flex-1" id="main-content">
             <NotFoundPage onNavigate={navigateTo} />
           </main>
           <Footer settings={settings} onNavigate={navigateTo} />
         </div>
       ) : (
         <div className="min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)] selection:bg-[var(--accent-color)]/30 selection:text-[var(--accent-color)]">
+          <a className="skip-link" href="#main-content">Skip to content</a>
           {/* Global Navigation */}
           <Navbar
             settings={settings}
@@ -368,7 +385,7 @@ export default function App() {
           />
 
           {/* Main Content Router */}
-          <main className="flex-1">
+          <main className="flex-1" id="main-content">
             {currentPath === '/work' || currentPath.startsWith('/work/') ? (
               <WorkPage
                 projects={projects}
@@ -380,6 +397,7 @@ export default function App() {
                 <ContactSection
                   settings={settings}
                   preselectedService={preselectedService}
+                  standalone
                 />
               </div>
             ) : (
@@ -387,10 +405,17 @@ export default function App() {
                 {/* 1. Hero Section */}
                 <HeroSection settings={settings} onNavigate={navigateTo} />
 
-                {/* 2. Trust Strip (Tech + Verified Client Proof) */}
-                <TrustStrip testimonial={testimonials[0]} />
+                {/* Skills */}
+                <TrustStrip />
 
-                {/* 3. Services Section */}
+                {/* Selected work */}
+                <FeaturedProjectsSection
+                  projects={projects}
+                  onSelectProject={(p) => setSelectedProject(p)}
+                  onNavigate={navigateTo}
+                />
+
+                {/* Services */}
                 <ServicesSection
                   services={services}
                   onSelectService={(serviceTitle) => {
@@ -400,26 +425,16 @@ export default function App() {
                   }}
                 />
 
-                {/* 4. Featured Projects Section */}
-                <FeaturedProjectsSection
-                  projects={projects}
-                  onSelectProject={(p) => setSelectedProject(p)}
-                  onNavigate={navigateTo}
-                />
-
-                {/* 5. Process Section (4 Steps) */}
+                {/* Project process */}
                 <ProcessSection />
 
-                {/* 6. Testimonials Section */}
-                <TestimonialsSection testimonials={testimonials} />
-
-                {/* 7. About Section */}
+                {/* About */}
                 <AboutSection settings={settings} onNavigate={navigateTo} />
 
-                {/* 8. FAQ Section */}
+                {/* FAQ */}
                 <FAQSection faqs={faqs} />
 
-                {/* 9. Contact / Booking Section */}
+                {/* Contact */}
                 <ContactSection
                   settings={settings}
                   preselectedService={preselectedService}
